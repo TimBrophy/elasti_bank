@@ -1,0 +1,44 @@
+Metadata-Version: 2.1
+Name: django-unsplash
+Version: 1.0
+Summary: A simple Django app to manage Unsplash Photos.
+Home-page: UNKNOWN
+Author: Saúl Domínguez Gómez
+Author-email: saulydominguez@gmail.com
+License: MIT License
+Platform: UNKNOWN
+Classifier: Environment :: Web Environment
+Classifier: Framework :: Django
+Classifier: Framework :: Django :: 2.1
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3.5
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Topic :: Internet :: WWW/HTTP
+Classifier: Topic :: Internet :: WWW/HTTP :: Dynamic Content
+
+=====
+unsplash
+=====
+
+Unsplash is a simple Django app to manage Unsplash photos and use it in your project.
+
+Detailed documentation is in the "docs" directory.
+
+Quick start
+-----------
+
+1. Add "unsplash" to your INSTALLED_APPS setting like this::
+
+    INSTALLED_APPS = [
+        ...
+        'unsplash',
+    ]
+
+2. Run `python manage.py migrate` to create the unsplash models.
+
+3. Start the development server and visit http://127.0.0.1:8000/admin/
+   to create an Unsplash Photo (you'll need the Admin app enabled).
+

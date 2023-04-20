@@ -1,0 +1,52 @@
+"""config URL Configuration
+
+The `urlpatterns` list routes URLs to views.py. For more information please see:
+    https://docs.djangoproject.com/en/3.1/topics/http/urls/
+Examples:
+Function views.py
+    1. Add an import:  from my_app import views.py
+    2. Add a URL to urlpatterns:  path('', views.py.home, name='home')
+Class-based views.py
+    1. Add an import:  from other_app.views.py import Home
+    2. Add a URL to urlpatterns:  path('', Home.as_view(), name='home')
+Including another URLconf
+    1. Import the include() function: from django.urls import include, path
+    2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
+"""
+from django.contrib import admin
+from django.urls import path, include
+from django.views.generic.base import TemplateView
+from content.views import content_home, content_list, content_detail
+from activity.views import activity_home
+from bankaccounts.views import bankaccounts_home,bankaccount_application, success_page_view
+from transactions.views import debit_transaction, debit_success, transaction_detail, money_transfer, transaction_history
+from uxtools.views import myself_at_a_glance, advanced_search, uxtools_home, transactions_map
+from public.views import home
+from django.conf import settings
+from django.conf.urls.static import static
+
+urlpatterns = [
+    path('', home, name='home'),
+    path('admin/', admin.site.urls),
+    path('accounts/', include('accounts.urls')),
+    path('accounts/', include('django.contrib.auth.urls')),
+    path('content/', content_home, name='content-home'),
+    path('content-list/<id>', content_list, name='content-list'),
+    path('content-detail/<id>', content_detail, name='content-detail'),
+    path('my-activity/', activity_home, name='my-activity'),
+    path('my-bank-accounts/', bankaccounts_home, name='my-bank-accounts'),
+    path('my-transactions/<id>', transaction_history, name='my-transactions'),
+    path('bank-account-application/', bankaccount_application, name='bank-account-application'),
+    path('bank-account-application/success/', success_page_view, name='success'),
+    path('transfer-money/', money_transfer, name='transfer-money'),
+    path('transfer-money/debit-success/<id>', debit_success, name='debit-success'),
+    path('send-money/', debit_transaction, name='send-money'),
+    path('send-money/debit-success/<id>', debit_success, name='debit-success'),
+    path('my-transactions/transaction-detail/<id>/<value>', transaction_detail, name='transaction-detail'),
+    path('uxtools/', uxtools_home, name='uxtools-home'),
+    path('uxtools/myself', myself_at_a_glance, name='myself-at-a-glance'),
+    path('uxtools/search', advanced_search, name='advanced-search'),
+    path('transactions-map/', transactions_map, name='transactions-map'),]
+
+urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

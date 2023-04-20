@@ -1,0 +1,93 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container" style="display: flex; flex-wrap: wrap;">
+  <div class="card" style="flex: 1 1 100%; max-width: 1200px; margin-right: 10px;">
+    <div class="card-body">
+      <div class="panel-heading">
+        <h3>Your transactions</h3>
+      </div>
+      <div>
+        <form id="filter-form" method="get">
+          <select name="timeframe" onchange="document.getElementById('filter-form').submit()">
+            <option value="3" {% if months == '3' %}selected{% endif %}>3 months</option>
+            <option value="6" {% if months == '6' %}selected{% endif %}>6 months</option>
+            <option value="12" {% if months == '12' %}selected{% endif %}>12 months</option>
+          </select>
+        </form>
+        <pre></pre>
+      </div>
+      <div id="map" style="width: 100%; height: 600px"></div>
+    </div>
+  </div>
+  <div class="card" style="flex: 1 1 100%; max-width: 400px; margin-right: 10px;">
+    <table class="table">
+      <tr>
+        <th scope="col">Category</th>
+        <th scope="col">Number of transactions</th>
+      </tr>
+      <tbody>
+        {% for category in categories %}
+        <tr>
+          <td>{{ category.key }}</td>
+          <td class="count">{{ category.doc_count }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+  <!-- Include the Google Maps JavaScript API -->
+  <script src="https://maps.googleapis.com/maps/api/js?key={{ maps_key }}"></script>
+
+  <script>
+    function initMap() {
+      // Set the coordinates for the map center
+      var center = {lat: 39.8283, lng: -98.5795};
+
+      // Create a new Google Map object
+      var map = new google.maps.Map(document.getElementById('map'), {
+        zoom: 4,
+        center: center
+      });
+
+      // Add a marker for each transaction location
+      {% for transaction in data %}
+          var marker = new google.maps.Marker({
+            position: {lat: {{ transaction.lat }}, lng: {{ transaction.lon }}},
+            map: map,
+            title: 'Transaction'
+          });
+
+          var contentString = '<div><strong>Value:</strong> {{ transaction.value }}</div>' +
+                              '<div><strong>Category:</strong> {{ transaction.category }}</div>' +
+                              '<div><strong>Destination Entity:</strong> {{ transaction.destination_entity }}</div>';
+
+          var infowindow = new google.maps.InfoWindow({
+            content: contentString
+          });
+
+          marker.addListener('click', function() {
+            infowindow.open(map, marker);
+          });
+      {% endfor %}
+    }
+
+    // Call the initMap function when the page loads
+    google.maps.event.addDomListener(window, 'load', initMap);
+
+    // Add event listener to the dropdown menu
+    document.getElementById('time-period').addEventListener('change', function() {
+      var timePeriod = this.value;
+      var url = window.location.href.split('?')[0] + '?time_period=' + timePeriod;
+      window.location.href = url;
+
+    });
+
+  </script>
+
+{% endblock %}

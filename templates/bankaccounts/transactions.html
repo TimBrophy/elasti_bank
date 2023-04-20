@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+
+{% block title %}My bank accounts{% endblock %}
+
+{% block content %}
+
+<div class="container">
+    <div class="card">
+        <div class="card-body">
+            <h3>My {{ my_account_details.bankaccounttype }} account</h3>
+            Current balance: {{ my_balance }}
+            <table class="table">
+            <tr>
+              <th scope="col">Transaction date</th>
+              <th scope="col">Reference</th>
+              <th scope="col">Description</th>
+              <th scope="col">Amount</th>
+            </tr>
+            <tbody>
+            {% for t in my_transactions %}
+            <tr>
+                <td>{{ t.created_at|date:"d-m-y" }}</td>
+                <td>{{ t.reference }}</td>
+                <td>{{ t.description }}</td>
+                <td><a href="{% url 'transaction-detail' t.id t.value %}">{{ t.value }}</a></td>
+            </tr>
+            {% endfor %}
+
+            </tbody>
+            </table>
+            {% if my_transactions.has_other_pages %}
+                <div class="pagination">
+                    <span class="step-links">
+                        {% if my_transactions.has_previous %}
+                            <a href="?page=1">&laquo; first</a>
+                            <a href="?page={{ my_transactions.previous_page_number }}">&lsaquo; prev</a>
+                        {% endif %}
+
+                        <span class="current-page">
+                            Page {{ my_transactions.number }} of {{ my_transactions.paginator.num_pages }}.
+                        </span>
+
+                        {% if my_transactions.has_next %}
+                            <a href="?page={{ my_transactions.next_page_number }}">next &rsaquo;</a>
+                            <a href="?page={{ my_transactions.paginator.num_pages }}">last &raquo;</a>
+                        {% endif %}
+                    </span>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+{% endblock %}

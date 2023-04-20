@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% block title %}Transaction detail{% endblock %}
+
+{% block content %}
+<div class="container">
+  <div class="card">
+    <div class="card-body">
+      <h3 class="panel-title">{{ my_transaction_details.reference }}</h3>
+        <table class="table">
+          <tr>
+            <td>Source account</td>
+            <td>{{ my_transaction_details.source_account }}</td>
+          </tr>
+          <tr>
+            <td>Destination account</td>
+            <td>{{ my_transaction_details.destination_account }}</td>
+          </tr>
+          <tr>
+            <td>Transaction type</td>
+            <td>{{ transaction_type }}</td>
+          </tr>
+          <tr>
+            <td>Value</td>
+            <td>{{ my_transaction_details.value }}</td>
+          </tr>
+          <tr>
+            <td>Description</td>
+            <td>{{ my_transaction_details.description }}</td>
+          </tr>
+          <tr>
+            <td>Timestamp</td>
+            <td>{{ my_transaction_details.created_at }}</td>
+          </tr>
+        </table>
+      </div>
+  </div>
+</div>
+
+{% endblock %}

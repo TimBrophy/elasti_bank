@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+
+{% block title %}Transaction list{% endblock %}
+
+{% block content %}
+<div class="container" style="display: flex; justify-content: space-between;">
+    <div class="card" style="flex: 1; margin-right: 10px;">
+        <div class="card-body">
+            <div class="panel-heading">
+                <h3>My accounts</h3>
+            </div>
+            <table class="table">
+                <tr>
+                    <th scope="col">Transaction Date and Time</th>
+                    <th scope="col">Transaction Type</th>
+                    <th scope="col">Description</th>
+                    <th scope="col">Value</th>
+                    <th scope="col">Recipient Name</th>
+                </tr>
+                <tbody>
+                    {% for transaction in transactions %}
+                    <tr>
+                        <td><a href="{% url 'transaction-detail' transaction.id transaction.value %}"> {{ transaction.created_at|date:"d-m-Y H:i:s" }}</a></td>
+                        <td>{{ transaction.transaction_type }}</td>
+                        <td>{{ transaction.description }}</td>
+                        <td>{{ transaction.value }}</td>
+                        <td>{{ transaction.recipient_name }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+            <!-- Add Pagination -->
+            {% if transactions.has_other_pages %}
+            <nav>
+                <ul class="pagination">
+                    {% if transactions.has_previous %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page=1">&laquo; First</a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ transactions.previous_page_number }}">Previous</a>
+                    </li>
+                    {% endif %}
+
+                    <li class="page-item active">
+                        <a class="page-link" href="?page={{ transactions.number }}">{{ transactions.number }}</a>
+                    </li>
+
+                    {% if transactions.has_next %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ transactions.next_page_number }}">Next</a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ transactions.paginator.num_pages }}">Last &raquo;</a>
+                    </li>
+                    {% endif %}
+                </ul>
+            </nav>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,20 @@
+{% load unsplash_tags sass_tags %}
+
+<link href="{% sass_src 'unsplash/scss/index.scss' %}" rel="stylesheet" type="text/css" />
+
+<div class="parallax {% if fixed %}fixed{% endif %}">
+	<div class="bg" style="background-image: url('{{ photo.url }}');" {% if not fixed %}uk-parallax="bgy: -400"{% endif %}></div>
+	
+	{% if top_separator_name or bot_separator_name %}
+		<div class="separators">
+			{% if top_separator_name %}
+				{% useparator top_separator_name %}
+			{% endif %}
+			{% if bot_separator_name %}
+				{% useparator bot_separator_name top=False %}
+			{% endif %}
+		</div>
+	{% endif %}
+
+	<a href="#photos" class="uk-position-bottom-center uk-icon-link go-down-link" uk-icon="icon: chevron-down; ratio: 2.5" uk-scroll="duration: 3000"></a>
+</div>

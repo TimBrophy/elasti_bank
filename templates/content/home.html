@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block title %}Video series{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="card-body">
+        <h2>Video series catalogue</h2>
+    </div>
+    <div class="accordion" id="accordion">
+        {% for series in series_list %}
+            <div class="card">
+                <div class="card-header bg-white" id="heading{{series.id}}">
+                  <h5 class="mb-0">
+                    <button class="btn btn-link" data-toggle="collapse" data-target="#collapse{{series.id}}" aria-expanded="true" aria-controls="collapse{{series.id}}" aria-expanded="false">
+                      {{ series.name}}
+                    </button>
+                  </h5>
+                </div>
+
+                <div id="collapse{{series.id}}" class="collapse" aria-labelledby="heading{{series.id}}" data-parent="#accordion">
+                  <div class="card-body">
+                      <div class="row">
+                          <div class="col-sm-3"><img src="../media/{{ series.image }}" width="150"></div>
+                          <div class="col-sm-7"><p>{{ series.description }}</p></div>
+                          <div class="col-sm-2"><a class="btn btn-outline-primary" href="{% url 'content-list' series.id %}">Check it out</a></div>
+                      </div>
+                  </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+ </div>
+{% endblock %}
+

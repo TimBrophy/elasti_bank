@@ -1,0 +1,29 @@
+<li class="slide-{{ forloop.counter }} total-photos-{{ slide.photos.count }}">
+
+{% if slide.ken_burns_effect %}
+	<div class="uk-position-cover uk-animation-kenburns uk-animation-reverse uk-transform-origin-center-left">
+{% endif %}
+
+	{% if slide.photos.count == 1 %}
+		{% comment %} <img src="{{ slide.photos.first.url }}" alt="{{ slide.photos.first.photo_alias }}" uk-cover> {% endcomment %}
+		<div class="bg" style="{% if slide.style %}{{ slide.style }}{% endif %}" {% if slide.parallax != 0 %}uk-parallax="bgy: {{ slide.parallax }}"{% endif %}></div>
+	{% elif slide.photos.count > 1 %}
+		<div class="photos-container">
+			{% for p in slide.photos.all %}
+				<div class="photo-container-{{ forloop.counter }}">
+					<img src="{{ p.url }}" alt="{{ p.photo_alias }}" class="photo-{{ forloop.counter }}" uk-cover>
+				</div>
+			{% endfor %}
+		</div>
+	{% endif %}
+
+	{% if slide.content_overlay_html %}
+		<div class="content-overlay">
+			{{ slide.content_overlay_html|safe }}
+		</div>
+	{% endif %}
+
+{% if slide.ken_burns_effect %}
+	</div>
+{% endif %}
+</li>

@@ -1,0 +1,54 @@
+{% load unsplash_tags sass_tags %}
+
+<link href="{% sass_src 'unsplash/scss/index.scss' %}" rel="stylesheet" type="text/css" />
+
+<div class="uk-position-relative uk-visible-toggle uk-light" id="{% if slideshow.id_attr %}{{ slideshow.id_attr}}{% endif %}" uk-slideshow="{{ slideshow.style }}">
+	
+	{% if slideshow.top_separator or slideshow.bot_separator %}
+		<div class="separators">
+			{% if slideshow.top_separator %}
+				{% useparator slideshow.top_separator.name %}
+			{% endif %}
+			{% if slideshow.bot_separator %}
+				{% useparator slideshow.bot_separator.name top=False %}
+			{% endif %}
+		</div>
+	{% endif %}
+	
+	<ul class="uk-slideshow-items">
+		{% for slide in slides %}
+			<li class="slide-{{ forloop.counter }} total-photos-{{ slide.photos.count }}">
+
+				{% if slide.ken_burns_effect %}
+					<div class="uk-position-cover uk-animation-kenburns uk-animation-reverse uk-transform-origin-center-left">
+				{% endif %}
+
+					{% if slide.photos.count == 1 %}
+						{% comment %} <img src="{{ slide.photos.first.url }}" alt="{{ slide.photos.first.photo_alias }}" uk-cover> {% endcomment %}
+						<div class="bg" style="{% if slide.style %}{{ slide.style }}{% endif %}" {% if slide.parallax != 0 %}uk-parallax="bgy: {{ slide.parallax }}"{% endif %}></div>
+					{% elif slide.photos.count > 1 %}
+						<div class="photos-container">
+							{% for p in slide.photos.all %}
+								<div class="photo-container-{{ forloop.counter }}">
+									<img src="{{ p.url }}" alt="{{ p.photo_alias }}" class="photo-{{ forloop.counter }}" uk-cover>
+								</div>
+							{% endfor %}
+						</div>
+					{% endif %}
+
+					{% if slide.content_overlay_html %}
+						<div class="content-overlay">
+							{{ slide.content_overlay_html|safe }}
+						</div>
+					{% endif %}
+				
+				{% if slide.ken_burns_effect %}
+					</div>
+				{% endif %}
+			</li>
+		{% endfor %}
+	</ul>
+	
+	<a class="uk-position-center-left uk-hidden-hover" href="#" uk-slidenav-previous uk-slideshow-item="previous"></a>
+    <a class="uk-position-center-right uk-hidden-hover" href="#" uk-slidenav-next uk-slideshow-item="next"></a>
+</div>

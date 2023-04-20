@@ -1,0 +1,15 @@
+{% extends 'unsplash/base.html' %}
+
+{% block content %}
+	{% load unsplash_tags %}
+
+	<div id="photos">
+		{% for photo in random_photos %}
+			<div class="photo-container photo-{{ forloop.counter }} {% if forloop.counter0|divisibleby:5 %}left{% endif %} {% if forloop.counter0|subtract:1|divisibleby:5 != 0 %}right{% endif %}">
+				<img src="{{ photo.url }}" alt="{{ photo.photo_alias }}" />
+			</div>
+		{% empty %}
+			<h1>No photos yet.</h1>
+		{% endfor %}
+	</div>
+{% endblock content %}

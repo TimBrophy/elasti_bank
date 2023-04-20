@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+{% load embed_video_tags %}
+
+{% block title %}Video series{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <h2>{{ content_item.name }}</h2>
+        {% video content_item.video 'medium' %}
+    </div>
+{% endblock %}

@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+
+{% block title %}Bank account application form{% endblock %}
+
+{% block content %}
+   {% load crispy_forms_tags %}
+    <div class="container">
+      <div class="card col-md-8">
+        <div class="card-body">
+            <h2>Apply for an account</h2>
+            <form method="post">
+                {% csrf_token %}
+                {{form|crispy}}
+                <button class="btn btn-primary my-4" type="submit">Submit</button>
+            </form>
+        </div>
+      </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block title %}Video series{% endblock %}
+
+{% block content %}
+<div class="container">
+      <div class="card">
+        <div class="card-body">
+            <h2>My activities</h2>
+            <table class="table">
+            <thead class="thead-dark">
+                <tr>
+                  <th scope="col">Date & Time</th>
+                  <th scope="col">Description</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for activity in activity_items %}
+            <tr>
+                <th scope="row">{{ activity.created_at }}</th>
+                <td>{{ activity.activity_log_message }}</td>
+            </tr>
+            {% endfor %}
+            </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}

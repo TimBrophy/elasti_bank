@@ -1,0 +1,34 @@
+{% extends 'unsplash/base.html' %}
+
+{% block content %}
+	{% load unsplash_tags %}
+
+	<div class="uk-container uk-margin-medium-bottom">
+		<h1>Welcome</h1>
+		<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Adipisci rem eligendi dignissimos error consequatur deleniti nisi! Debitis assumenda doloremque recusandae voluptatum, sapiente quibusdam adipisci nam incidunt eius nisi ipsa laudantium maiores officia fugiat? Unde magnam laudantium molestias ipsum expedita quo. Suscipit totam nostrum sit? Explicabo atque consequatur dolorum eaque maiores aut officia quisquam dolore voluptate odit. Ipsam ipsa laudantium molestias molestiae? Ab consectetur possimus quaerat officia culpa assumenda obcaecati facere itaque, quo non minus explicabo, ex voluptatibus harum numquam vitae. Qui exercitationem dolores nulla odio ratione corrupti maxime, ea tempore explicabo cupiditate aliquid nisi error. Illo temporibus labore quas fugit?</p>
+		<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Necessitatibus unde numquam nulla tempora optio vel perferendis incidunt magnam dolore excepturi esse, sapiente quidem. Hic maiores pariatur molestias, blanditiis tenetur, dolore eos earum magnam non consequuntur voluptates debitis quod quam officiis aut nemo quaerat quae accusantium dignissimos? Laboriosam debitis ipsa rem eligendi nemo rerum consequuntur quidem optio odio? Voluptates repellat aperiam eveniet natus illum quisquam, enim, ipsam eligendi recusandae architecto dolorem maiores! Iste distinctio, quas incidunt dolore iure veniam sequi quisquam sunt beatae, quaerat hic qui at reiciendis quod veritatis sapiente officiis, cum deleniti aperiam ullam dolores doloribus non? Delectus fugit, laborum dolore nulla ullam consectetur id aperiam suscipit totam nihil, illum ipsum fugiat nam rerum, commodi reiciendis accusamus ad expedita ipsam? Distinctio, provident aliquid beatae molestias quae explicabo corporis labore quam hic, tempora temporibus dolorem id, quidem suscipit voluptatem. Delectus necessitatibus doloribus sint sit corporis officia ab molestias provident error, commodi debitis dignissimos reprehenderit voluptatem id laudantium. Facilis ut molestiae, dolore laborum ipsam inventore quam nam tenetur maiores excepturi veritatis nobis, esse, debitis incidunt dicta! Temporibus voluptates, doloribus, earum suscipit veritatis laudantium sunt tempora dolore, consectetur ipsam saepe minus sint est deleniti quos architecto commodi aspernatur corrupti eius repellat dignissimos. Laborum, vitae ratione veniam beatae quae sit eaque ad maxime quidem nulla cumque aspernatur facilis natus ipsa, reiciendis dicta molestiae asperiores delectus eveniet corporis? Necessitatibus delectus nesciunt, ratione voluptatibus inventore aliquid, optio corrupti sed perferendis praesentium voluptate ea id amet, dicta cum officiis libero atque expedita ad ipsum reiciendis. Autem, enim harum! Natus alias exercitationem voluptate similique quam architecto? Voluptatem doloribus quidem minus reiciendis quod. Natus voluptatibus eius molestiae commodi minus! Numquam aspernatur voluptatum dolorum velit impedit itaque cumque, possimus in quibusdam! Blanditiis, voluptatem. Facere sit reiciendis consectetur earum ipsam modi iure expedita aperiam qui exercitationem, molestias nemo tempore dolorum?</p>
+		<p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Illum totam corporis fugit unde. Dolores corrupti quod deleniti hic quia aperiam libero voluptate, eveniet excepturi error unde quos. Aut vero quos soluta! Nulla ut vitae voluptatem, soluta dolorem incidunt? Tenetur fugit animi quia distinctio. Eligendi impedit quas nobis omnis aut temporibus, ab maiores similique molestiae esse? Provident dolore labore voluptatibus recusandae ullam, minus neque animi? Labore exercitationem dolorum vero eaque velit rem molestiae tempora dolore, repudiandae quis corporis placeat, modi adipisci eos deserunt accusantium ut perspiciatis et. Eos est facere rerum iusto error, veritatis ipsa repudiandae asperiores, accusantium necessitatibus ipsum velit.</p>
+	</div>
+	
+	{% uparallax 'iphone2' fixed=True bot_separator_name='sep4' %}
+
+	{% uparallax 'girl1' fixed=True bot_separator_name='trees' top_separator_name='waves' %}
+
+	<div class="uk-container">
+		{% uslideshow 'Slideshow1' %}
+
+		{% uslideshow 'ChocoSlideshow' %}
+
+		<div id="photos" class="uk-margin-medium-top">
+			{% for photo in photos %}
+				<div class="photo-container photo-{{ forloop.counter }}" uk-lightbox>
+					<a href="{{ photo.url }}">
+						{% uphoto photo.photo_alias %}
+					</a>
+				</div>
+			{% empty %}
+				<h1>No photos yet.</h1>
+			{% endfor %}
+		</div>
+	</div>
+{% endblock content %}
