@@ -7,18 +7,24 @@ from mimesis.locales import Locale
 import pandas as pd
 import pytz
 import random_address
-
 from django.core.management.base import BaseCommand
 from accounts.models import CustomUser
 from bankaccounts.models import BankAccount, BankAccountType
 from transactions.models import CreditTransactions, DebitTransactions, CreditTransactionType, DebitTransactionType
 from retailers.models import Retailers
+import json
 
-finance = Finance(locale=Locale.EN)
-code = Code(locale=Locale.EN)
+finance = Finance(locale=Locale.EN_GB)
+code = Code()
 text = Text(locale=Locale.EN)
 address = Address(locale=Locale.EN)
 person = Person(locale=Locale.EN)
+
+
+def random_description():
+    payment_topics = ['gifts', 'mobile phone', 'school fees', 'cleaner', 'babysitting', 'contractors', 'gym', 'repairs']
+    word = random.choice(payment_topics)
+    return word
 
 
 def generate_coordinates():
@@ -101,7 +107,8 @@ class Command(BaseCommand):
             inbound_credit_accounts = list(transmission_accounts) + list(savings_accounts)
             outbound_purchase_accounts = list(transmission_accounts) + list(credit_accounts)
             outbound_transfer_accounts = list(transmission_accounts) + list(savings_accounts) + list(loan_accounts)
-            inbound_internal_transfer_accounts = list(fixed_deposit_accounts) + list(savings_accounts) + list(loan_accounts) + list(investment_accounts) + list(credit_accounts)
+            inbound_internal_transfer_accounts = list(fixed_deposit_accounts) + list(savings_accounts) + list(
+                loan_accounts) + list(investment_accounts) + list(credit_accounts)
             outbound_internal_transfer_accounts = list(transmission_accounts) + list(savings_accounts)
             if accounts:
                 for i in range(0, total_months):
@@ -118,13 +125,12 @@ class Command(BaseCommand):
                         credit_data = []
                         for ct in range(total_credit_transactions):
                             source_account = "{}_ext".format(random.randint(00000000, 99999999))
-                            source_bank = finance.company()
-                            from_name = person.full_name()
+                            source_bank = finance.bank()
+                            from_name = finance.company()
                             destination_account = random.choice(inbound_credit_accounts)
-                            # destination_account = BankAccount.objects.get(id=destination_account)
                             created_at = random_created_at(i)
                             value = random.randint(credit_transaction_range[0], credit_transaction_range[1])
-                            description = text.quote()
+                            description = "Inbound EFT from {} for {}.".format(from_name, random_description())
                             reference = generate_reference()
                             transaction_type = random.choice(credit_transaction_type)
                             CreditTransactions.objects.create(source_account=source_account, source_bank=source_bank,
@@ -150,15 +156,15 @@ class Command(BaseCommand):
                             source_account = random.choice(outbound_transfer_accounts)
                             # source_account = BankAccount.objects.get(id=source_account)
                             recipient_name = person.full_name()
-                            destination_bank = finance.company()
+                            destination_bank = finance.bank()
                             destination_account = "{}_ext".format(random.randint(00000000, 99999999))
                             created_at = random_created_at(i)
                             value = random.randint(debit_transaction_range[0], debit_transaction_range[1])
-                            description = text.quote()
+                            description = "Outbound EFT to {} for {}".format(recipient_name, random_description())
                             reference = generate_reference()
                             transaction_type = random.choice(debit_transaction_type)
                             current_balance = source_account.balance
-                            source_account.balance = current_balance + value
+                            source_account.balance = current_balance - value
                             DebitTransactions.objects.create(source_account=source_account,
                                                              destination_bank=destination_bank,
                                                              destination_account=destination_account,
@@ -179,13 +185,13 @@ class Command(BaseCommand):
                         purchase_data = []
                         for pt in range(total_purchase_transactions):
                             retailer = random.choice(retailers)
-                            transaction_description = "{}:{} {} {}".format(retailer.name, text.hex_color(), text.quote(),
-                                                                           generate_coordinates())
+                            transaction_description = "Purchase at {}:{} {} {}".format(retailer.name, text.hex_color(),
+                                                                                       code.isbn(),
+                                                                                       generate_coordinates())
                             created_at = random_created_at(i)
                             source_account = random.choice(outbound_purchase_accounts)
-                            # source_account = BankAccount.objects.get(id=source_account)
                             current_balance = source_account.balance
-                            destination_bank = finance.company()
+                            destination_bank = finance.bank()
                             destination_account = "{}_retail".format(random.randint(00000000, 99999999))
                             recipient_name = retailer.name
                             value = random.randint(purchase_transaction_range[0], purchase_transaction_range[1])
@@ -212,17 +218,17 @@ class Command(BaseCommand):
                         for it in range(total_internal_transfers):
                             # handle the credit to the other account
                             source_account = random.choice(outbound_internal_transfer_accounts)
-                            # source_account = BankAccount.objects.get(id=source_account)
                             source_bank = "elasti_bank"
                             from_name = u.username
                             destination_account = random.choice(inbound_internal_transfer_accounts)
-                            # destination_account = BankAccount.objects.get(id=destination_account)
-                            this_credit_transaction_type = credit_transaction_type.get(id=2)
-                            this_debit_transaction_type = debit_transaction_type.get(id=4)
+                            while destination_account == source_account:
+                                destination_account = random.choice(inbound_internal_transfer_accounts)
+                            this_credit_transaction_type = credit_transaction_type.filter(name="Transfer").first()
+                            this_debit_transaction_type = debit_transaction_type.filter(name="Transfer").first()
 
                             created_at = random_created_at(i)
                             value = random.randint(transfer_transaction_range[0], transfer_transaction_range[1])
-                            description = text.quote()
+                            description = "Internal transfer for {}".format(random_description())
                             reference = generate_reference()
 
                             CreditTransactions.objects.create(source_account=source_account, source_bank=source_bank,
@@ -253,4 +259,3 @@ class Command(BaseCommand):
 
                             transfer_data.append({'type': 'debit', 'amount': value})
                             transfer_df = pd.concat([transfer_df, pd.DataFrame(transfer_data)])
-

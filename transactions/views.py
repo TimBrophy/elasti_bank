@@ -73,18 +73,19 @@ def money_transfer(request):
             document = {
                 'id': record_id,
                 'timestamp': transfer_transaction.created_at,
-                'User id': source_bank_account.user.id,
-                'Username': source_bank_account.user.username,
-                'Bank account': source_bank_account.account_number,
-                'Full name': source_bank_account.user.first_name + ' ' + source_bank_account.user.last_name,
-                'Destination entity': transfer_transaction.destination_bank,
-                'Destination account': transfer_transaction.destination_account,
-                'Recipient': transfer_transaction.recipient_name,
-                'Value': transfer_transaction.value,
-                'Description': transfer_transaction.description,
-                'Reference': transfer_transaction.reference,
-                'Type': 'Transfer',
-                'Sub-type': transfer_transaction.transaction_type.name
+                'user.id': source_bank_account.user.id,
+                'user.name': source_bank_account.user.username,
+                'bank_account': source_bank_account.account_number,
+                'full_name': source_bank_account.user.first_name + ' ' + source_bank_account.user.last_name,
+                'destination_entity': transfer_transaction.destination_bank,
+                'destination_account': transfer_transaction.destination_account,
+                'recipient': transfer_transaction.recipient_name,
+                'value': transfer_transaction.value,
+                'description': transfer_transaction.description,
+                'text_field': transfer_transaction.description,
+                'reference': transfer_transaction.reference,
+                'type': 'Transfer',
+                'sub_type': transfer_transaction.transaction_type.name
             }
 
             es.index(index="transactions", id=record_id, document=document)
@@ -112,25 +113,25 @@ def debit_transaction(request):
             es = Elasticsearch(
                 cloud_id=settings.ES_CLOUD_ID,
                 http_auth=(settings.ES_USER, settings.ES_PASS)
-
             )
 
             record_id = uuid.uuid4()
             document = {
                 'id': record_id,
                 'timestamp': debit_transaction.created_at,
-                'User id': bank_account.user.id,
-                'Username': bank_account.user.username,
-                'Bank account': bank_account.account_number,
-                'Full name': bank_account.user.first_name + ' ' + bank_account.user.last_name,
-                'Destination entity': debit_transaction.destination_bank,
-                'Destination account': debit_transaction.destination_account,
-                'Recipient': debit_transaction.recipient_name,
-                'Value': debit_transaction.value,
-                'Description': debit_transaction.description,
-                'Reference': debit_transaction.reference,
-                'Type': 'Debit',
-                'Sub-type': debit_transaction.transaction_type.name
+                'user.id': bank_account.user.id,
+                'user.name': bank_account.user.username,
+                'bank_account': bank_account.account_number,
+                'full_name': bank_account.user.first_name + ' ' + bank_account.user.last_name,
+                'destination_entity': debit_transaction.destination_bank,
+                'destination_account': debit_transaction.destination_account,
+                'recipient': debit_transaction.recipient_name,
+                'value': debit_transaction.value,
+                'description': debit_transaction.description,
+                'text_field': debit_transaction.description,
+                'reference': debit_transaction.reference,
+                'type': 'Debit',
+                'sub_type': debit_transaction.transaction_type.name
             }
 
             es.index(index="transactions", id=record_id, document=document)
@@ -140,6 +141,8 @@ def debit_transaction(request):
                                       created_at=datetime.now(tz=timezone.utc), activitytype=activity_type)
             activity_entry.save()
             return redirect('debit-success/{}'.format(request.POST.get('source_account')))
+        else:
+            print(form.errors)
     else:
         form = DebitTransactionForm(request.user)
     return render(request, 'transactions/send_money.html', {'form': form})

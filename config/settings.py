@@ -12,17 +12,17 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 
 from pathlib import Path
 import os
-from elasticsearch import Elasticsearch, RequestsHttpConnection
+from dotenv import load_dotenv
+load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '%%au&7p)z4nis^9h*dz!w+!ra4h_fa!_iufc7(h$(x_)f_-%ib'
+SECRET_KEY = os.environ['DJANGO_SECRET']
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -49,6 +49,8 @@ INSTALLED_APPS = [
     'transactions',
     'retailers',
     'export',
+    'uxtools',
+    'elasticapm.contrib.django',
 ]
 
 AUTH_USER_MODEL = 'accounts.CustomUser'
@@ -60,6 +62,7 @@ MIDDLEWARE = [
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
+    'elasticapm.contrib.django.middleware.TracingMiddleware',
 ]
 
 ROOT_URLCONF = 'config.urls'
@@ -82,26 +85,21 @@ TEMPLATES = [
     },
 ]
 
-
 WSGI_APPLICATION = 'config.wsgi.application'
-
 
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
 DATABASES = {
     'default': {
-        # 'ENGINE': 'django.db.backends.sqlite3',
-        # 'NAME': BASE_DIR / 'db.sqlite3',
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'elasti_bank',
-        'USER': 'lapsdb',
-        'PASSWORD': 'epic_use_case',
-        'HOST': 'localhost',
-        'PORT': '5432',
+        'USER': os.environ.get('DB_USER'),
+        'PASSWORD': os.environ.get('DB_PASS'),
+        'HOST': os.environ.get('DB_HOST'),
+        'PORT': os.environ.get('DB_PORT'),
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/3.1/ref/settings/#auth-password-validators
@@ -121,7 +119,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/3.1/topics/i18n/
 
@@ -135,7 +132,6 @@ USE_L10N = True
 
 USE_TZ = True
 
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
@@ -147,7 +143,6 @@ STATICFILES_DIRS = [
 STATIC_URL = '/static/'
 LOGIN_REDIRECT_URL = 'home'
 LOGOUT_REDIRECT_URL = 'home'
-
 
 # Base url to serve media files
 MEDIA_URL = 'media/'
@@ -161,26 +156,34 @@ CRISPY_TEMPLATE_PACK = 'bootstrap5'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-FAKER_LOCALE = None     # settings.LANGUAGE_CODE is loaded
+FAKER_LOCALE = None  # settings.LANGUAGE_CODE is loaded
 FAKER_PROVIDERS = None  # faker.DEFAULT_PROVIDERS is loaded (all)
 
 # ALL CUSTOM SETTINGS
-ES_CLOUD_ID = "fsi-use-cases:ZXUtY2VudHJhbC0xLmF3cy5jbG91ZC5lcy5pbzo0NDMkOThkZDc3ODc0M2IwNDhlYWI5Y2VjNmQ5Njg2NTMyMDckZTE5ZGQzNWI1YjYyNGRmMGFkZWNhNWMxNTdmMTczYTc="
-ES_USER = "elastic"
-ES_PASS = "woO0Ec74QqlWLTvMZdd8U5qg"
+ES_CLOUD_ID = os.environ.get('ES_CLOUD_ID_SECRET')
+ES_USER = os.environ.get('ES_USER_SECRET')
+ES_PASS = os.environ.get('ES_PASS_SECRET')
 
-ES_CLIENT = Elasticsearch(
-    hosts=['https://fsi-use-cases.es.eu-central-1.aws.cloud.es.io'],
-    http_auth=('elastic', 'woO0Ec74QqlWLTvMZdd8U5qg'),
-    use_ssl=True,
-    verify_certs=True,
-    connection_class=RequestsHttpConnection
-)
+APPSEARCH_ENDPOINT = os.environ.get('APPSEARCH_ENDPOINT_SECRET')
+APPSEARCH_AUTH = os.environ.get('APPSEARCH_AUTH_SECRET')
 
+GOOGLE_MAPS_API_KEY = os.environ.get('GOOGLE_MAPS_SECRET')
+OPENAI_KEY = os.environ.get('OPENAI_SECRET')
 
+VECTOR_MODEL = ".elser_model_1"
 
-APPSEARCH_ENDPOINT = "https://fsi-use-cases.ent.eu-central-1.aws.cloud.es.io"
-APPSEARCH_AUTH = "private-45sw3rhm73up2nqrg1np7xwm"
+ELASTIC_APM = {
+    # Set the required service name. Allowed characters:
+    # a-z, A-Z, 0-9, -, _, and space
+    'SERVICE_NAME': 'elasti_bank',
+    'DEBUG': True,
 
-# GOOGLE_MAPS_API_KEY = "AIzaSyB41DRUbKWJHPxaFjMAwdrzWzbVKartNGg"
-GOOGLE_MAPS_API_KEY = "AIzaSyCUAmYg1nSbPa3dXCNgmJX419vNWxa3rcU"
+    # Use if APM Server requires a secret token
+    'SECRET_TOKEN': os.environ['APM_SECRET_TOKEN'],
+
+    # Set the custom APM Server URL (default: http://localhost:8200)
+    'SERVER_URL': os.environ.get('APM_SERVER_URL'),
+
+    # Set the service environment
+    'ENVIRONMENT': 'production',
+}

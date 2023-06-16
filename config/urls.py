@@ -20,7 +20,7 @@ from content.views import content_home, content_list, content_detail
 from activity.views import activity_home
 from bankaccounts.views import bankaccounts_home,bankaccount_application, success_page_view
 from transactions.views import debit_transaction, debit_success, transaction_detail, money_transfer, transaction_history
-from uxtools.views import myself_at_a_glance, advanced_search, uxtools_home, transactions_map
+from uxtools.views import transactions_map, symantec_search, chat_interface
 from public.views import home
 from django.conf import settings
 from django.conf.urls.static import static
@@ -43,10 +43,11 @@ urlpatterns = [
     path('send-money/', debit_transaction, name='send-money'),
     path('send-money/debit-success/<id>', debit_success, name='debit-success'),
     path('my-transactions/transaction-detail/<id>/<value>', transaction_detail, name='transaction-detail'),
-    path('uxtools/', uxtools_home, name='uxtools-home'),
-    path('uxtools/myself', myself_at_a_glance, name='myself-at-a-glance'),
-    path('uxtools/search', advanced_search, name='advanced-search'),
-    path('transactions-map/', transactions_map, name='transactions-map'),]
+    path('uxtools/search', symantec_search, name='search-transactions'),
+    path('transactions-map/', transactions_map, name='transactions-map'),
+    path('chat/', chat_interface, name='chat'),
+]
 
-urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
-urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+if settings.DEBUG:
+    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

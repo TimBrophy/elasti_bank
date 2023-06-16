@@ -5,103 +5,114 @@
 {% block title %}Home{% endblock %}
 
 {% block content %}
-    <div class="panel-heading">
-        <pre class="h1 text-right text-white">
-            elasti_bank { your_money : matters }
-        </pre>
+    <div>
+        <h1 class="title">The bank that cares about you.</h1>
     </div>
-    <div class="container" style="display: flex; justify-content: space-between;">
-        <div class="card" style="flex: 1; margin-right: 10px;">
+    {% if user.is_authenticated %}
+        <div class="card">
             <div class="card-body">
-                <div class="panel-heading">
-                    <h3>Our services</h3>
-                </div>
-                <div class="card-deck">
-                    {% for i in bankaccounttypes_list %}
-                    <div class="card mb-4 shadow-sm">
-                        <a href="{% url 'bank-account-application' %}">
-                            <img src="media/{{ i.image }}" width="100%">
-                        </a>
-                        <div class="card-body">
-                            <p class="card-title"><h5>{{ i.typename }}</h5></p>
-                            <p class="card-text">{{ i.description }}</p>
-                        </div>
-                    </div>
-                    {% endfor %}
-                </div>
-            </div>
-        </div>
-        <div class="card" style="flex: 1; margin-right: 10px;">
-            <div class="card-body">
-                {% if user.is_authenticated %}
-                <div class="panel-heading">
-                    <h3>Your details</h3>
-                </div>
-                <div>
-                    You are currently logged in as {{ username }}
-                    <br>
-                    You have the following accounts with us:
-                    <pre></pre>
-                    <table class="table">
+                <h2 class="title">Your accounts:</h2>
+                <table class="table">
+                    <thead>
                         <tr>
-                          <th scope="col">Date opened</th>
+                          <th scope="col">Account number</th>
                           <th scope="col">Account Type</th>
                           <th scope="col">Current Balance</th>
                         </tr>
+                    </thead>
                     <tbody>
-                    {% for account in my_accounts %}
-                    <tr>
-                        <td>{{ account.created_at|date:"d-m-y" }}</td>
-                        <td>{{ account.bankaccounttype }}</td>
-                        <td>{{ account.balance }}</td>
-                    </tr>
-                    {% endfor %}
+                        {% for account in my_accounts %}
+                        <tr>
+                            <th scope="row"><a href="{% url 'my-transactions' account.id %}">{{ account.account_number }}</a></th>
+                            <td>{{ account.bankaccounttype }}</td>
+                            <td>{{ account.balance }}</td>
+                        </tr>
+                        {% endfor %}
                     </tbody>
-                    </table>
-                </div>
-                <div style="display: flex; justify-content: space-between; width: 100%;">
-                    <a class="btn btn-outline-primary" href="{% url 'send-money' %}" style="width: 50%;">Make a payment</a>
-                    <div style="width: 20%;"></div> <!-- Whitespace -->
-                    <a class="btn btn-outline-primary" href="{% url 'transfer-money' %}" style="width: 50%;">Make a transfer</a>
-                </div>
-                <pre></pre>
-                <div>
-                   <div class="panel-heading">
-                        <h3>Latest transactions</h3>
-                    </div>
-                    <table class="table">
+                </table>
+            </div>
+        </div>
+        <pre></pre>
+        <div>
+            <div style="display: flex; justify-content: space-between; width: 100%;">
+                <a class="btn btn-info" href="{% url 'send-money' %}" style="width: 50%;">Make a payment</a>
+                <div style="width: 5%;"></div>
+                <a class="btn btn-info" href="{% url 'transfer-money' %}" style="width: 50%;">Transfer money</a>
+                <div style="width: 5%;"></div>
+                <a class="btn btn-info" href="{% url 'bank-account-application' %}" style="width: 50%;">Open an account</a>
+            </div>
+        </div>
+        <pre></pre>
+        <div class="card">
+            <div class="card-body">
+                <h2 class="title">Your most recent transactions</h2>
+                <table class="table">
+                    <thead>
                         <tr>
                             <th scope="col">Transaction Date and Time</th>
                             <th scope="col">Transaction Type</th>
                             <th scope="col">Value</th>
                             <th scope="col">Recipient Name</th>
                         </tr>
-                        <tbody>
-                            {% for transaction in transactions %}
-                            <tr>
-                                <td><a href="{% url 'transaction-detail' transaction.id transaction.value %}"> {{ transaction.created_at|date:"d-m-Y H:i:s" }}</a></td>
-                                <td>{{ transaction.transaction_type }}</td>
-                                <td>{{ transaction.value }}</td>
-                                <td>{{ transaction.recipient_name }}</td>
-                            </tr>
+                    </thead>
+                    <tbody>
+                        {% for transaction in transactions %}
+                        <tr>
+                            <th scope="row"><a href="{% url 'transaction-detail' transaction.id transaction.value %}"> {{ transaction.created_at|date:"d-m-Y H:i:s" }}</a></th>
+                            <td>{{ transaction.transaction_type }}</td>
+                            <td>{{ transaction.value }}</td>
+                            <td>{{ transaction.recipient_name }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    {% endif %}
+    <pre></pre>
+    {% if user.is_authenticated %}
+        {% if offer_transactions %}
+        <div>
+            <div>
+                <h1 class="title">Tailor made offers for you:</h1>
+                <div class="card-deck">
+                  {% for offer in offers %}
+                    <div class="card mb-4 shadow-sm">
+                        <div class="card-body">
+                            <h2 class="title"><a href="{% url 'bank-account-application' %}">{{ offer.name }}</a></h2>
+                            <p class="card-text">{{ offer.description }}</p>
+                            <p class="card-text">This offer is based on these entries in you transaction history:</p>
+                            <ul>
+                            {% for t in offer_transactions %}
+                                {% if t.campaign_name == offer.name %}
+                                    <li class="small">{{ t.description }} - {{ t.score }}
+                                {% endif %}
                             {% endfor %}
-                        </tbody>
-                    </table>
+                            </ul>
+                        </div>
+                    </div>
+                {% endfor %}
                 </div>
-                {% endif %}
-                <div class="panel-heading">
-                    <h3>Contact Us</h3>
+            </div>
+        </div>
+        {% endif %}
+    {% endif %}
+    <pre></pre>
+    <div>
+        <div>
+            <h2 class="title">All services</h2>
+            <div class="card-deck">
+                {% for i in bankaccounttypes_list %}
+                <div class="card mb-4 shadow-sm">
+                    <div class="card-body">
+                        <p class="card-title"><h5> <a href="{% url 'bank-account-application' %}">{{ i.typename }}</a></h5></p>
+                        <p class="card-text">{{ i.description }}</p>
+                    </div>
                 </div>
-                <form method="post">
-                    {% csrf_token %}
-                    {{ form|crispy }}
-                    <button type="submit" class="btn btn-primary">Submit</button>
-                </form>
-
+                {% endfor %}
             </div>
         </div>
     </div>
-
 {% endblock %}
 
 

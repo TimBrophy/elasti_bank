@@ -14,4 +14,4 @@ class CustomUserAdmin(UserAdmin):
 
 
 admin.site.register(CustomUser, CustomUserAdmin)
-admin.site.register(IncomeLevel)
+# admin.site.register(IncomeLevel)

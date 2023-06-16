@@ -9,9 +9,7 @@ CustomUser = get_user_model()
 
 class DebitTransactionForm(forms.ModelForm):
     created_at = forms.DateTimeField(initial=datetime.now(), widget=forms.HiddenInput)
-    transaction_type = forms.ModelChoiceField(queryset=DebitTransactionType.objects.filter(name='EFT'),
-                                              widget=forms.HiddenInput(),
-                                              initial=DebitTransactionType.objects.get(name='EFT'))
+    transaction_type = forms.ModelChoiceField(queryset=DebitTransactionType.objects.filter(name='EFT'))
 
     class Meta:
         model = DebitTransactions
@@ -24,9 +22,7 @@ class DebitTransactionForm(forms.ModelForm):
 
 class TransferForm(forms.ModelForm):
     created_at = forms.DateTimeField(initial=datetime.now(), widget=forms.HiddenInput)
-    transaction_type = forms.ModelChoiceField(queryset=DebitTransactionType.objects.filter(name='Transfer'),
-                                              widget=forms.HiddenInput(),
-                                              initial=DebitTransactionType.objects.get(name='Transfer'))
+    transaction_type = forms.ModelChoiceField(queryset=DebitTransactionType.objects.filter(name='Transfer'))
     destination_account = forms.ModelChoiceField(queryset=None)
     destination_bank = forms.CharField(initial='elasti_bank', widget=forms.HiddenInput())
     recipient_name = forms.CharField(initial=None, widget=forms.HiddenInput())

@@ -6,6 +6,8 @@ class IncomeLevel(models.Model):
     lower = models.IntegerField(null=False)
     upper = models.IntegerField(null=False)
 
+    def __str__(self):
+        return self.category
 
 class CustomUser(AbstractUser):
     phone_number = models.CharField(max_length=20, null=True, blank=True)

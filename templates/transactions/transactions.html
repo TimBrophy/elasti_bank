@@ -7,20 +7,22 @@
     <div class="card" style="flex: 1; margin-right: 10px;">
         <div class="card-body">
             <div class="panel-heading">
-                <h3>My accounts</h3>
+                <h2 class="title">My accounts</h2>
             </div>
             <table class="table">
-                <tr>
-                    <th scope="col">Transaction Date and Time</th>
-                    <th scope="col">Transaction Type</th>
-                    <th scope="col">Description</th>
-                    <th scope="col">Value</th>
-                    <th scope="col">Recipient Name</th>
-                </tr>
+                <thead>
+                    <tr>
+                        <th scope="col" width="200px">Date and Time</th>
+                        <th scope="col">Type</th>
+                        <th scope="col">Description</th>
+                        <th scope="col">Value</th>
+                        <th scope="col">Recipient</th>
+                    </tr>
+                </thead>
                 <tbody>
                     {% for transaction in transactions %}
                     <tr>
-                        <td><a href="{% url 'transaction-detail' transaction.id transaction.value %}"> {{ transaction.created_at|date:"d-m-Y H:i:s" }}</a></td>
+                        <th scope="row"><a href="{% url 'transaction-detail' transaction.id transaction.value %}"> {{ transaction.created_at|date:"d-m-Y H:i" }}</a></th>
                         <td>{{ transaction.transaction_type }}</td>
                         <td>{{ transaction.description }}</td>
                         <td>{{ transaction.value }}</td>

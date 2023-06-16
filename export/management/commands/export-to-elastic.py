@@ -1,3 +1,4 @@
+import time
 import requests
 from urllib.parse import urlencode
 from django.core.management.base import BaseCommand
@@ -8,7 +9,6 @@ from retailers.models import Retailers
 from activity.models import Activity
 from export.models import DebittTransactionExportLog, CreditTransactionExportLog
 from elasticsearch import Elasticsearch, helpers
-from elastic_enterprise_search import EnterpriseSearch, AppSearch
 import uuid
 import datetime
 import re
@@ -17,9 +17,8 @@ from geopy.geocoders import Nominatim
 import warnings
 from django.conf import settings
 
-
-
 warnings.filterwarnings("ignore", category=FutureWarning)
+
 
 def actions_gen(data, index):
     for doc in data:
@@ -58,14 +57,6 @@ class Command(BaseCommand):
     help = 'Export data to Elasticsearch'
 
     def handle(self, *args, **kwargs):
-        es = Elasticsearch(
-            cloud_id=settings.ES_CLOUD_ID,
-            http_auth=(settings.ES_USER, settings.ES_PASS)
-
-        )
-        app_search = AppSearch(settings.APPSEARCH_ENDPOINT,
-                               http_auth=settings.APPSEARCH_AUTH)
-
         exported_credit_transactions = CreditTransactionExportLog.objects.all().values('id')
         exported_debit_transactions = CreditTransactionExportLog.objects.all().values('id')
         ct_exported_log = list(exported_credit_transactions.values_list('id', flat=True))
@@ -76,6 +67,12 @@ class Command(BaseCommand):
         # loop through all users
 
         for u in users:
+            time.sleep(5)
+            es = Elasticsearch(
+                cloud_id=settings.ES_CLOUD_ID,
+                http_auth=(settings.ES_USER, settings.ES_PASS),
+                retry_on_timeout=True
+            )
             # import the users' activities/interactions
             activities = Activity.objects.filter(user=u.id)
             if activities.count() > 0:
@@ -101,19 +98,21 @@ class Command(BaseCommand):
                     record_id = uuid.uuid4()
                     activity_record = {
                         'id': record_id,
-                        'User id': u.id,
-                        'Username': u.username,
-                        'Full name': u.first_name + ' ' + u.last_name,
+                        'sor_id': activity.id,
+                        'user_id': u.id,
+                        'username': u.username,
+                        'full_name': u.first_name + ' ' + u.last_name,
                         'created_at': activity.created_at,
-                        'Log message': activity.activity_log_message,
+                        'log_message': activity.activity_log_message,
                         'location': {
                             'lat': activity_location['latitude'],
                             'lon': activity_location['longitude']
                         },
-                        'Activity type': activity.activitytype.name
+                        'activity_type': activity.activitytype.name
                     }
                     activities_df = activities_df.append(activity_record, ignore_index=True)
                 activity_data = activities_df.to_dict(orient='records')
+                time.sleep(5)
                 helpers.bulk(es, actions_gen(activity_data, 'interactions'))
 
             # loop through all bank accounts for these users
@@ -125,17 +124,19 @@ class Command(BaseCommand):
                     record_id = uuid.uuid4()
                     bankaccount_record = {
                         'id': record_id,
-                        'User id': u.id,
-                        'Username': u.username,
-                        'Full name': u.first_name + ' ' + u.last_name,
+                        'sor_id': bankaccount.id,
+                        'user_id': u.id,
+                        'username': u.username,
+                        'full_name': u.first_name + ' ' + u.last_name,
                         'timestamp': datetime.datetime.now(),
                         'created_at': bankaccount.created_at,
-                        'Bank Account Type': bankaccount.bankaccounttype.typename,
-                        'Account number': bankaccount.account_number,
-                        'Balance': bankaccount.balance
+                        'bank_account_type': bankaccount.bankaccounttype.typename,
+                        'account_number': bankaccount.account_number,
+                        'balance': bankaccount.balance
                     }
                     bankaccounts_df = bankaccounts_df.append(bankaccount_record, ignore_index=True)
                     bank_account_data = bankaccounts_df.to_dict(orient='records')
+                    time.sleep(5)
                     helpers.bulk(es, actions_gen(bank_account_data, 'bank-accounts'))
 
                     # get all the credit transactions and loop through
@@ -148,52 +149,29 @@ class Command(BaseCommand):
                         record_id = uuid.uuid4()
                         new_row = {
                             'id': record_id,
+                            'sor_id': ct.id,
                             'timestamp': ct.created_at,
-                            'User id': u.id,
-                            'Username': u.username,
-                            'Bank account': bankaccount.account_number,
-                            'Account created date': bankaccount.created_at,
-                            'Full name': u.first_name + ' ' + u.last_name,
-                            'Source entity': ct.source_bank,
-                            'Source account': ct.source_account,
-                            'Sender': ct.from_name,
-                            'Value': ct.value,
-                            'Description': ct.description,
-                            'Reference': ct.reference,
-                            'Type': 'Credit',
-                            'Sub-type': ct.transaction_type.name
+                            'user_id': u.id,
+                            'username': u.username,
+                            'bank_account': bankaccount.account_number,
+                            'account_created_date': bankaccount.created_at,
+                            'full_name': u.first_name + ' ' + u.last_name,
+                            'source_entity': ct.source_bank,
+                            'source_account': ct.source_account,
+                            'sender': ct.from_name,
+                            'value': ct.value,
+                            'description': ct.description,
+                            'reference': ct.reference,
+                            'type': 'Credit',
+                            'sub_type': ct.transaction_type.name
                         }
-                        if u.username == 'JK':
-                            appsearch_url = "http://127.0.0.1:8000/my-transactions/transaction-detail/{}/{}".format(ct.id, ct.value)
-                            new_row_appsearch = {
-                                'id': record_id,
-                                'timestamp': ct.created_at,
-                                'user_id': u.id,
-                                'username': u.username,
-                                'bank_account': bankaccount.account_number,
-                                'account_created_date': bankaccount.created_at,
-                                'fullname': u.first_name + ' ' + u.last_name,
-                                'source_entity': ct.source_bank,
-                                'source_account': ct.source_account,
-                                'sender': ct.from_name,
-                                'value': ct.value,
-                                'description': ct.description,
-                                'reference': ct.reference,
-                                'type': 'Credit',
-                                'sub_type': ct.transaction_type.name,
-                                'url': appsearch_url
-                            }
-                            records.append(new_row_appsearch)
-
                         credittransactions_df = credittransactions_df.append(new_row, ignore_index=True)
                         log_entry = CreditTransactionExportLog(id=ct.id,
                                                                exported_at=datetime.datetime.now(datetime.timezone.utc))
                         log_entry.save()
                     data = credittransactions_df.to_dict(orient='records')
+                    time.sleep(5)
                     helpers.bulk(es, actions_gen(data, 'transactions'))
-                    if len(records):
-                        response = app_search.index_documents(engine_name='search-transactions', documents=records)
-                        print(response)
                     num_rows = credittransactions_df.shape[0]
 
                     # get all the debit transactions and loop through
@@ -230,61 +208,34 @@ class Command(BaseCommand):
                         record_id = uuid.uuid4()
                         new_row = {
                             'id': record_id,
+                            'sor_id': dt.id,
                             'timestamp': dt.created_at,
-                            'User id': u.id,
-                            'Username': u.username,
-                            'Bank account': bankaccount.account_number,
-                            'Account created date': bankaccount.created_at,
-                            'Full name': u.first_name + ' ' + u.last_name,
-                            'Destination entity': dt.destination_bank,
-                            'Destination account': dt.destination_account,
-                            'Recipient': dt.recipient_name,
-                            'Value': dt.value,
-                            'Description': dt.description,
-                            'Reference': dt.reference,
-                            'Type': 'Debit',
-                            'Sub-type': dt.transaction_type.name,
-                            'Category': category,
+                            'user_id': u.id,
+                            'username': u.username,
+                            'bank_account': bankaccount.account_number,
+                            'account_created_date': bankaccount.created_at,
+                            'full_name': u.first_name + ' ' + u.last_name,
+                            'destination_entity': dt.destination_bank,
+                            'destination_account': dt.destination_account,
+                            'recipient': dt.recipient_name,
+                            'value': dt.value,
+                            'description': "{}. Spend category: {}".format(dt.description, category),
+                            'reference': dt.reference,
+                            'type': 'Debit',
+                            'sub_type': dt.transaction_type.name,
+                            'category': category,
                             'location': {
                                 "lat": transaction_location["latitude"],
                                 "lon": transaction_location["longitude"]
                             }
                         }
-                        if u.username == 'jake':
-                            appsearch_url = "http://127.0.0.1:8000/my-transactions/transaction-detail/{}/-{}".format(dt.id, dt.value)
-                            new_row_appsearch = {
-                                'id': record_id,
-                                'timestamp': dt.created_at,
-                                'user_id': u.id,
-                                'username': u.username,
-                                'bank_account': bankaccount.account_number,
-                                'account_created_date': bankaccount.created_at,
-                                'fullname': u.first_name + ' ' + u.last_name,
-                                'destination_entity': dt.destination_bank,
-                                'destination_account': dt.destination_account,
-                                'recipient': dt.recipient_name,
-                                'value': dt.value,
-                                'description': dt.description,
-                                'reference': dt.reference,
-                                'type': 'Debit',
-                                'sub_type': dt.transaction_type.name,
-                                'category': category,
-                                'location': {
-                                    "lat": transaction_location["latitude"],
-                                    "lon": transaction_location["longitude"]
-                                },
-                                'url': appsearch_url
-                            }
-                            records.append(new_row_appsearch)
-                        if len(records):
-                            response = app_search.index_documents(engine_name='search-transactions', documents=records)
-                            print(response)
                         debittransactions_df = debittransactions_df.append(new_row, ignore_index=True)
                         log_entry = DebittTransactionExportLog(id=dt.id,
                                                                exported_at=datetime.datetime.now(datetime.timezone.utc))
                         log_entry.save()
 
                     data = debittransactions_df.to_dict(orient='records')
+                    time.sleep(5)
                     helpers.bulk(es, actions_gen(data, 'transactions'))
                     num_rows = debittransactions_df.shape[0]
             # start importing bank account applications
@@ -296,12 +247,21 @@ class Command(BaseCommand):
                 for app in bankaccountapplications:
                     account_type = app.bankaccounttype.typename
                     record_id = uuid.uuid4()
-                    address = {
-                        'street': app.streetaddress1 + ' ' + app.streetaddress2,
-                        'city': app.suburb,
-                        'state': app.province,
-                        'country': app.country
-                    }
+                    if app.streetaddress2:
+                        address = {
+                            'street': app.streetaddress1 + ' ' + app.streetaddress2,
+                            'city': app.suburb,
+                            'state': app.province,
+                            'country': app.country
+                        }
+                    else:
+                        address = {
+                            'street': app.streetaddress1,
+                            'city': app.suburb,
+                            'state': app.province,
+                            'country': app.country
+                        }
+
 
                     application_location = geocode_address(address)
 
@@ -309,26 +269,28 @@ class Command(BaseCommand):
                         application_location = geolocator.reverse("51.5072, -0.1276")
                     new_row = {
                         'id': record_id,
+                        'sor_id': app.id,
                         'created_at': app.created_at,
-                        'User id': u.id,
-                        'Username': u.username,
-                        'Full name': u.first_name + ' ' + u.last_name,
-                        'Bank Account Type': account_type,
-                        'Contact number': app.contactnumber,
-                        'Street Address 1': app.streetaddress1,
-                        'Street Address 2': app.streetaddress2,
-                        'Suburb': app.suburb,
-                        'Province': app.province,
-                        'Country': app.country,
+                        'user_id': u.id,
+                        'username': u.username,
+                        'full_name': u.first_name + ' ' + u.last_name,
+                        'bank_account_type': account_type,
+                        'contact_number': app.contactnumber,
+                        'street_address_1': app.streetaddress1,
+                        'street_address_2': app.streetaddress2,
+                        'suburb': app.suburb,
+                        'province': app.province,
+                        'country': app.country,
                         'location': {
                             "lat": application_location['lat'],
                             "lon": application_location['lng']
                         },
-                        'Gross income': app.grossincome,
-                        'Expenses': app.expenses
+                        'gross_income': app.grossincome,
+                        'gross_expenses': app.expenses
                     }
                     applications_df = applications_df.append(new_row, ignore_index=True)
                 application_data = applications_df.to_dict(orient='records')
+                time.sleep(5)
                 helpers.bulk(es, actions_gen(application_data, 'account-applications'))
 
                 num_rows = applications_df.shape[0]

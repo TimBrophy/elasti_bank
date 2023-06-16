@@ -60,7 +60,7 @@ body {
   line-height: 1.5;
   color: #343a40;
   text-align: left;
-  background-color: #fff;
+  background-color: #FFFFFF;
 }
 
 [tabindex="-1"]:focus:not(:focus-visible) {
@@ -153,14 +153,14 @@ sup {
 }
 
 a {
-  color: #EBBE65;
+  color: #0077CC;
   text-decoration: none;
   background-color: transparent;
 }
 
 a:hover {
-  color: #F3D79E;
-  text-decoration: underline;
+  color: #145364;
+  text-decoration: none;
 }
 
 a:not([href]):not([class]) {
@@ -1674,7 +1674,7 @@ pre code {
 
 .table thead th {
   vertical-align: bottom;
-  border-bottom: 2px solid #dee2e6;
+  border-bottom: 1px solid #dee2e6;
 }
 
 .table tbody + tbody {
@@ -2543,15 +2543,15 @@ fieldset:disabled a.btn {
 }
 
 .btn-primary {
-  color: #D36DB2;
+  color: #0077CC;
   background-color: #FFFFFF;
-  border-color: #D36DB2;
+  border-color: #0077CC;
 }
 
 .btn-primary:hover {
-  color: #fff;
-  background-color: #D36DB2;
-  border-color: #D36DB2;
+  color: #FFFFFF;
+  background-color: #0077CC;
+  border-color: #0077CC;
 }
 
 .btn-primary:focus, .btn-primary.focus {
@@ -2655,14 +2655,14 @@ fieldset:disabled a.btn {
 
 .btn-info {
   color: #fff;
-  background-color: #17a2b8;
-  border-color: #17a2b8;
+  background-color: #0077CC;
+  border-color: #0077CC;
 }
 
 .btn-info:hover {
-  color: #fff;
-  background-color: #138496;
-  border-color: #117a8b;
+  color: #000000;
+  background-color: #FFFFFF;
+  border-color: #0077CC;
 }
 
 .btn-info:focus, .btn-info.focus {
@@ -4726,7 +4726,7 @@ input[type="button"].btn-block {
   background-color: #fff;
   background-clip: border-box;
   border: 1px solid rgba(0, 0, 0, 0.125);
-  border-radius: 0.25rem;
+  border-radius: 0.80rem;
 }
 
 .card > hr {

@@ -59,10 +59,13 @@ class Command(BaseCommand):
 
                     random_activity_type = random.randrange(1, 1000)
                     if random_activity_type < 50:
-                        activity_type = ActivityType.objects.filter(name="Retail banking").first()
+                        activity_type = ActivityType.objects.filter(name="Retail bank").first()
 
-                    elif 50 <= random_activity_type <= 150:
+                    elif 50 <= random_activity_type <= 250:
                         activity_type = ActivityType.objects.filter(name="ATM").first()
+
+                    elif 250 <= random_activity_type <= 500:
+                        activity_type = ActivityType.objects.filter(name="Call center").first()
 
                     else:
                         activity_type = ActivityType.objects.filter(name="Website").first()

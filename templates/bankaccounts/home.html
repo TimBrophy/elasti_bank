@@ -4,46 +4,51 @@
 
 {% block content %}
 
-<div class="container" style="display: flex; justify-content: space-between;">
-    <div class="card" style="flex: 1; margin-right: 10px;">
+<div class="container">
+    <div class="card">
         <div class="card-body">
             <div class="panel-heading">
-                <h3>My accounts</h3>
+                <h2 class="title">My accounts</h2>
             </div>
             <table class="table">
+                <thead>
+                    <tr>
+                      <th scope="col">Date opened</th>
+                      <th scope="col">Account Type</th>
+                      <th scope="col">Current Balance</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for account in account_list %}
                 <tr>
-                  <th scope="col">Date opened</th>
-                  <th scope="col">Account Type</th>
-                  <th scope="col">Current Balance</th>
+                    <th scope="row">{{ account.created_at|date:"d-m-y" }}</th>
+                    <td>{{ account.bankaccounttype }}</td>
+                    <td><a href="{% url 'my-transactions' account.id %}">{{ account.balance }}</a></td>
                 </tr>
-            <tbody>
-            {% for account in account_list %}
-            <tr>
-                <td>{{ account.created_at|date:"d-m-y" }}</td>
-                <td>{{ account.bankaccounttype }}</td>
-                <td><a href="{% url 'my-transactions' account.id %}">{{ account.balance }}</a></td>
-            </tr>
-            {% endfor %}
-            </tbody>
+                {% endfor %}
+                </tbody>
             </table>
         </div>
     </div>
-    <div class="card" style="flex: 1; margin-right: 10px;">
+    <pre></pre>
+    <div class="card">
         <div class="card-body">
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <h3>My account applications</h3>
+                    <h2 class="title">My account applications</h2>
                 </div>
                 <table class="table">
-                    <tr>
-                      <th scope="col">Date applied</th>
-                      <th scope="col">Account Type</th>
-                      <th scope="col">Current Status</th>
-                    </tr>
+                    <thead>
+                        <tr>
+                          <th scope="col">Date applied</th>
+                          <th scope="col">Account Type</th>
+                          <th scope="col">Current Status</th>
+                        </tr>
+                    </thead>
                     <tbody>
                     {% for application in application_list %}
                     <tr>
-                        <td>{{ application.created_at|date:"d-m-y" }}</th>
+                        <th scope="row">{{ application.created_at|date:"d-m-y" }}</th>
                         <td>{{ application.bankaccounttype }}</td>
                         <td>{{ application.status }}</td>
                     </tr>

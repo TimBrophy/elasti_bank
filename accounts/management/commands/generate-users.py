@@ -26,7 +26,7 @@ class Command(BaseCommand):
                 income_category = IncomeLevel.objects.get(id=2)
             else:
                 income_category = IncomeLevel.objects.get(id=1)
-            username = person.username()
+            username = person.username() + "_" + str(random.randint(10, 20000))
             first_name = person.first_name()
             last_name = person.last_name()
             email = person.email()

@@ -46,26 +46,25 @@ def bankaccount_application(request):
             document = {
                 'id': record_id,
                 'timestamp': application_record.created_at,
-                'User id': application_record.user.id,
-                'Username': user_record.username,
-                'Full name': "{} {}".format(user_record.first_name, user_record.last_name),
-                'Bank AccountType': application_record.bankaccounttype.typename,
-                'Contact number': application_record.contactnumber,
-                'Street Address 1': application_record.streetaddress1,
-                'Street Address 2': application_record.streetaddress2,
-                'Suburb': application_record.suburb,
-                'Province': application_record.province,
-                'Country': application_record.country,
-                'Gross income': application_record.grossincome,
-                'Expenses': application_record.expenses,
-                'Status': application_record.status.statusname,
+                'user_id': application_record.user.id,
+                'username': user_record.username,
+                'full_name': "{} {}".format(user_record.first_name, user_record.last_name),
+                'bank_account_type': application_record.bankaccounttype.typename,
+                'contact_number': application_record.contactnumber,
+                'street_address_1': application_record.streetaddress1,
+                'street_address_2': application_record.streetaddress2,
+                'suburb': application_record.suburb,
+                'province': application_record.province,
+                'country': application_record.country,
+                'gross_income': application_record.grossincome,
+                'gross_expenses': application_record.expenses,
+                'status': application_record.status.statusname,
                 'location': {
                     'lat': lat,
                     'lon': lon
                 }
             }
             response = es.index(index="account-applications", id=record_id, document=document)
-            print(response)
             application_record.save()
             return redirect('success')
     else:

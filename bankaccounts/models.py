@@ -5,8 +5,6 @@ import uuid
 
 class BankAccountType(models.Model):
     typename = models.CharField(max_length=15, verbose_name='Bank account type')
-    description = models.CharField(max_length=300, verbose_name='Description')
-    image = models.ImageField(blank=True, upload_to='images')
 
     def __str__(self):
         return self.typename

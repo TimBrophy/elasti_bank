@@ -10,6 +10,10 @@
   <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.css' %}">
   <link rel="stylesheet" type="text/css" href="{% static 'css/custom.css' %}">
   <script defer="defer" src="{% static 'js/main.4e881487.js' %}"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/typeahead.js/0.11.1/typeahead.bundle.min.js"></script>
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+  <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+
   <link href="{% static 'css/main.763385d2.css' %}" rel="stylesheet" />
 
   <meta name="theme-color" content="#563d7c">
@@ -30,52 +34,64 @@
   </style>
 
 </head>
-<body class="bg-light">
-  <div class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-white border-bottom shadow-sm fixed-top">
+<body>
+  <div class="d-flex flex-md-row align-items-center p-3 px-md-4 mb-3 bg-black border-bottom shadow-sm fixed-top">
     <a href="{% url 'home'%}" class="my-0 mr-md-auto font-weight-normal">
-      <img src="/media/elasti_bank.png" width="200">
+      <img src="/media/elasti_bank_dark.png" width="200">
     </a>
     <nav class="my-2 my-md-0 mr-md-3">
-      <a class="p-2 text-dark" href="{% url 'home'%}">Home</a>
+      <a class="p-2 text-white" href="{% url 'home'%}">Home</a>
     </nav>
     {% if user.is_authenticated %}
       <nav class="my-2 my-md-0 mr-md-3">
-        <a class="p-2 text-dark" href="{% url 'my-bank-accounts'%}">My bank accounts</a>
+        <a class="p-2 text-white" href="{% url 'my-bank-accounts'%}">My bank accounts</a>
       </nav>
 
       <nav class="my-2 my-md-0 mr-md-3">
-        <a class="p-2 text-dark" href="{% url 'send-money'%}">Payments</a>
+        <a class="p-2 text-white" href="{% url 'send-money'%}">Payments</a>
       </nav>
 
       <nav class="my-2 my-md-0 mr-md-3">
-        <a class="p-2 text-dark" href="{% url 'transfer-money'%}">Transfers</a>
+        <a class="p-2 text-white" href="{% url 'transfer-money'%}">Transfers</a>
+      </nav>
+
+      <nav class="my-2 my-md-0 mr-md-3">
+        |
+      </nav>
+
+      <nav class="my-2 my-md-0 mr-md-3">
+        <a class="p-2 text-white" href="{% url 'search-transactions'%}">Search</a>
       </nav>
       <nav class="my-2 my-md-0 mr-md-3">
-        <a class="p-2 text-dark" href="{% url 'advanced-search'%}">Transaction search</a>
+        <a class="p-2 text-white" href="{% url 'transactions-map'%}">Purchase map</a>
       </nav>
       <nav class="my-2 my-md-0 mr-md-3">
-        <a class="p-2 text-dark" href="{% url 'transactions-map'%}">Transaction map</a>
+        <a class="p-2 text-white" href="{% url 'chat'%}">Chat</a>
       </nav>
+      <nav class="my-2 my-md-0 mr-md-3 text-white">
+        |
+      </nav>
+
     {% endif %}
 
 
     {% if username %}
-      <nav class="my-2 my-md-0 mr-md-3">
-        Logged in as: <em class="font-weight-bold">{{ username }}</em>
+      <nav class="my-2 my-md-0 mr-md-3 text-white">
+        Logged in as: {{ username }}
       </nav>
 
-      <a class="btn btn-outline-primary" href="{% url 'logout' %}">Log out</a>
+      <a class="btn btn-info" href="{% url 'logout' %}">Log out</a>
     {% else %}
-      <a class="p-2 text-dark" href="{% url 'login' %}">Log in</a> | 
-      <a class="p-2 text-dark" href="{% url 'signup' %}">Sign up</a>
+      <a class="p-2 text-white" href="{% url 'login' %}">Log in</a> |
+      <a class="p-2 text-white" href="{% url 'signup' %}">Sign up</a>
     {% endif %}
 
 
 
   </div>
-  <div class="body-content background-image">
-    <main role="main" class="container">
-      <div class="container">
+  <div class="container">
+    <main role="main">
+      <div class="body-content">
       {% block content %}
       {% endblock %}
       </div>

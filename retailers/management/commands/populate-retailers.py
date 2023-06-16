@@ -7,7 +7,7 @@ class Command(BaseCommand):
     help = 'Generate random bank transactions'
 
     def handle(self, *args, **kwargs):
-        with open("/Users/timb/Dev/django_apm-master/data/cos2019.csv", newline='') as csvfile:
+        with open("/Users/timb/Dev/elasti_bank/master_data/cos2019.csv", newline='') as csvfile:
             reader = csv.DictReader(csvfile, delimiter=';')
             for row in reader:
                 if row['parent_company_revenue'] == '':

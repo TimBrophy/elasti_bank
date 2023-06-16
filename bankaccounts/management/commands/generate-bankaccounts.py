@@ -53,6 +53,16 @@ class Command(BaseCommand):
         for a in account_users:
             number_of_accounts = random.randrange(1, 5)
             app_probability = random.randrange(0, 6)
+            # run a check for demo user to have at least 1 transmission account
+            if a.username == "demo_user":
+                demo_accounts = BankAccount.objects.filter(user=a)
+                if demo_accounts.exists():
+                    has_transmission_account = BankAccount.objects.filter(user=a, bankaccounttype__in=transmission_accounts)
+                    if not has_transmission_account:
+                        timestamp = random_created_at(random_month)
+                        account_type = BankAccountType.objects.filter(typename="Transmission").first()
+                        BankAccount.objects.create(user=a, bankaccounttype=account_type, created_at=timestamp,
+                                                   balance=0)
 
             for accountnum in range(number_of_accounts):
                 # does the user have a valid inbound account yet?
@@ -74,7 +84,7 @@ class Command(BaseCommand):
 
                 new_address = real_random_address()
 
-                if not new_address['city']:
+                if not new_address.get('city'):
                     new_address = real_random_address()
                 else:
                     for applicationnum in range(random.randint(1, 3)):

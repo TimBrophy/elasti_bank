@@ -5,9 +5,12 @@ from content.models import ContentItem
 
 class ActivityType(models.Model):
     name = models.CharField(max_length=52, null=False)
-
     class Meta:
         verbose_name_plural = "Activity types"
+    def __str__(self):
+        return self.name
+
+
 
 class Activity(models.Model):
     activitytype = models.ForeignKey(ActivityType, on_delete=models.CASCADE, null=False)
@@ -18,3 +21,6 @@ class Activity(models.Model):
 
     class Meta:
         verbose_name_plural = "Activities"
+
+    def __str__(self):
+        return self.activitytype, self.user
