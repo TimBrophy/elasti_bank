@@ -12,7 +12,7 @@ class IncomeLevel(models.Model):
 class CustomUser(AbstractUser):
     phone_number = models.CharField(max_length=20, null=True, blank=True)
     birthdate = models.DateField(null=True, blank=True)
-    income_level = models.ForeignKey(IncomeLevel, on_delete=models.CASCADE, null=False)
+    income_level = models.ForeignKey(IncomeLevel, on_delete=models.CASCADE, null=True)
 
     def get_full_name(self):
         return f"{self.first_name} {self.last_name}"

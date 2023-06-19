@@ -78,13 +78,13 @@ class Command(BaseCommand):
         complete_value_data = []
         for u in users:
 
-            if u.income_level.category == "high":
+            if u.income_level == "high":
                 credit_transaction_range = [15000, 40000]
                 debit_transaction_range = [2000, 10000]
                 purchase_transaction_range = [10, 4000]
                 transfer_transaction_range = [500, 5000]
 
-            elif u.income_level.category == "middle":
+            elif u.income_level == "middle":
                 credit_transaction_range = [7000, 15000]
                 debit_transaction_range = [500, 3000]
                 purchase_transaction_range = [10, 1000]

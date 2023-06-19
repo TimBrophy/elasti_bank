@@ -1,4 +1,5 @@
 from django.core.management.base import BaseCommand, CommandError
+from django.core.management import call_command
 from bankaccounts.models import BankAccount, BankAccountType, BankAccountApplicationStatus
 from accounts.models import IncomeLevel
 from transactions.models import CreditTransactions, CreditTransactionType, DebitTransactions, DebitTransactionType
@@ -53,3 +54,6 @@ class Command(BaseCommand):
         debit_transaction_types = ['Transfer', 'Debit order', 'EFT', 'Purchase']
         for i in debit_transaction_types:
             DebitTransactionType.objects.create(name=i)
+
+        # Populate the retailers table
+        call_command('populate-retailers')

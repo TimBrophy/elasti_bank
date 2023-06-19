@@ -39,8 +39,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'accounts',
-    'content',
-    'embed_video',
     'public',
     'activity',
     'crispy_forms',
@@ -51,6 +49,7 @@ INSTALLED_APPS = [
     'export',
     'uxtools',
     'elasticapm.contrib.django',
+    'django_extensions',
 ]
 
 AUTH_USER_MODEL = 'accounts.CustomUser'

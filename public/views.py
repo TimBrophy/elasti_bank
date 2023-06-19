@@ -1,5 +1,4 @@
 from django.shortcuts import render
-from content.models import ContentItem
 from activity.models import Activity, ActivityType
 from bankaccounts.models import BankAccount, BankAccountType
 from transactions.models import CreditTransactions, DebitTransactions
@@ -20,7 +19,6 @@ def check_campaign_exists(offer_transactions, campaign_name):
 
 
 def home(request):
-    featured = ContentItem.objects.filter(featured=1)
     form = ContactForm()
     net_worth = 0
     my_accounts = []
@@ -141,7 +139,7 @@ def home(request):
 
     bankaccounttypes = BankAccountType.objects.all()
 
-    return render(request, 'home.html', {'featured_list': featured, 'form': form, 'net_worth': net_worth,
+    return render(request, 'home.html', {'form': form, 'net_worth': net_worth,
                                          'bankaccounttypes_list': bankaccounttypes, 'my_accounts': my_accounts,
                                          'transactions': most_recent_transactions,
                                          'offer_transactions': offer_transactions,

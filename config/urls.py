@@ -16,7 +16,6 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from django.views.generic.base import TemplateView
-from content.views import content_home, content_list, content_detail
 from activity.views import activity_home
 from bankaccounts.views import bankaccounts_home,bankaccount_application, success_page_view
 from transactions.views import debit_transaction, debit_success, transaction_detail, money_transfer, transaction_history
@@ -30,9 +29,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('accounts/', include('accounts.urls')),
     path('accounts/', include('django.contrib.auth.urls')),
-    path('content/', content_home, name='content-home'),
-    path('content-list/<id>', content_list, name='content-list'),
-    path('content-detail/<id>', content_detail, name='content-detail'),
     path('my-activity/', activity_home, name='my-activity'),
     path('my-bank-accounts/', bankaccounts_home, name='my-bank-accounts'),
     path('my-transactions/<id>', transaction_history, name='my-transactions'),

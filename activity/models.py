@@ -1,6 +1,5 @@
 from django.db import models
 from accounts.models import CustomUser
-from content.models import ContentItem
 
 
 class ActivityType(models.Model):
