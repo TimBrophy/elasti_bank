@@ -14,7 +14,7 @@ class Command(BaseCommand):
         pass
 
     def handle(self, *args, **options):
-        activity_types = ['Website', 'Retail bank', 'ATM']
+        activity_types = ['Website', 'Retail bank', 'ATM', 'Call center']
         for i in activity_types:
             ActivityType.objects.create(name=i)
 
