@@ -162,7 +162,7 @@ def symantec_search(request):
 
 @login_required
 def chat_interface(request):
-    iframe_url = "http://localhost:3000"  # Replace with your desired iframe URL
+    iframe_url = settings.CHAT_URL  # Replace with your desired iframe URL
 
     context = {
         'iframe_url': iframe_url,

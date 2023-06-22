@@ -173,6 +173,8 @@ APPSEARCH_AUTH = os.environ.get('APPSEARCH_AUTH_SECRET')
 GOOGLE_MAPS_API_KEY = os.environ.get('GOOGLE_MAPS_SECRET')
 OPENAI_KEY = os.environ.get('OPENAI_SECRET')
 
+CHAT_URL = os.environ.get('FLASK_APP_URL')
+
 VECTOR_MODEL = ".elser_model_1"
 
 ELASTIC_APM = {
