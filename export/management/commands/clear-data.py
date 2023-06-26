@@ -117,38 +117,38 @@ class Command(BaseCommand):
 
         delete_level = 'users'
         if delete_level == 'users':
-            response = input(
-                "Do you want to delete all users and all data related to users? This effectively means you "
-                "will wipe all records such as bank accounts, transactions and applications. (yes/no)")
-            if response.lower() == "yes":
-                print("Deleting all user related data. Forever.")
-                CustomUser.objects.exclude(username__in=['demo_user', 'timb']).delete()
-                BankAccount.objects.all().delete()
-                BankAccountApplications.objects.all().delete()
-                DebittTransactionExportLog.objects.all().delete()
-                CreditTransactionExportLog.objects.all().delete()
-                Activity.objects.all().delete()
+            # response = input(
+            #     "Do you want to delete all users and all data related to users? This effectively means you "
+            #     "will wipe all records such as bank accounts, transactions and applications. (yes/no)")
+            # if response.lower() == "yes":
+            print("Deleting all user related data. Forever.")
+            CustomUser.objects.exclude(username__in=['demo_user', 'timb']).delete()
+            BankAccount.objects.all().delete()
+            BankAccountApplications.objects.all().delete()
+            DebittTransactionExportLog.objects.all().delete()
+            CreditTransactionExportLog.objects.all().delete()
+            Activity.objects.all().delete()
 
-                delete_index('transactions')
-                create_index('transactions')
-                delete_index('bank-accounts')
-                create_index('bank-accounts')
-                delete_index('account-applications')
-                create_index('account-applications')
-                delete_index('interactions')
-                create_index('interactions')
-                delete_index('search_history')
-                create_index('search_history')
+            delete_index('transactions')
+            create_index('transactions')
+            delete_index('bank-accounts')
+            create_index('bank-accounts')
+            delete_index('account-applications')
+            create_index('account-applications')
+            delete_index('interactions')
+            create_index('interactions')
+            delete_index('search_history')
+            create_index('search_history')
 
-                delete_log_file('transactions.log')
-                delete_log_file('bank_account_data.log')
-                delete_log_file('application_data.log')
-                delete_log_file('activity_data.log')
+            delete_log_file('transactions.log')
+            delete_log_file('bank_account_data.log')
+            delete_log_file('application_data.log')
+            delete_log_file('activity_data.log')
 
-            elif response.lower() == "no":
-                print("Operation aborted.")
-            else:
-                print("Invalid input.")
+            # elif response.lower() == "no":
+            #     print("Operation aborted.")
+            # else:
+            #     print("Invalid input.")
 
         elif delete_level == 'bank-accounts':
             response = input(

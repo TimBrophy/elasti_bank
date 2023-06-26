@@ -17,7 +17,6 @@ def check_campaign_exists(offer_transactions, campaign_name):
 
 # Create your views.py here.
 
-
 def home(request):
     form = ContactForm()
     net_worth = 0

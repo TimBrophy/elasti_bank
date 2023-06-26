@@ -8,7 +8,16 @@ from datetime import datetime, timedelta
 from django.utils import timezone
 from django.core.paginator import Paginator
 import uuid
+from django.core.management import call_command
 
+@login_required
+def reset_data_view(request):
+    if request.method == 'POST':
+        # Run the management command
+        call_command('working-data')
+        # Redirect to a success page or render a success message
+
+    return render(request, 'uxtools/reset_data.html')
 
 @login_required
 def symantec_search(request):
