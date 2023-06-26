@@ -14,15 +14,17 @@ At the moment, the source code for the application is house in this repo (the on
 ES_CLOUD_ID_SECRET="<YOUR_CLOUD_ID>"
 ES_PASS_SECRET="<YOUR_PASSWORD>"
 ES_USER_SECRET="<YOUR_USER>"
+APM_SECRET_TOKEN="<YOUR_APM_SECRET_TOKEN>"
+APM_SERVER_URL="<YOUR_APM_SERVER_URL>"
 
-4) make sure you also update the Google Maps secret details to your own credentials:
+5) make sure you also update the Google Maps secret details to your own credentials:
 GOOGLE_MAPS_SECRET="<YOUR_SECRET_KEY>"
 
-5) Because the IP address of the VM has changed, you will need to add the VM IP address to the nginx configuration:
+6) Because the IP address of the VM has changed, you will need to add the VM IP address to the nginx configuration:
    - sudo nano /etc/nginx/sites-available/elasti_bank
    - set "server_name <YOUR_VM_IP>;"
 
-6) Because the chat part of the elasti_bank site is just a crowbar'd version of the esre python flask example, I've cheated a bit and simply spun that puppy up in a container locally and iframed it, so we need to head back to our elasti_bank/config/.env file and update the following variable:
+7) Because the chat part of the elasti_bank site is just a crowbar'd version of the esre python flask example, I've cheated a bit and simply spun that puppy up in a container locally and iframed it, so we need to head back to our elasti_bank/config/.env file and update the following variable:
    FLASK_APP_URL="http://<YOUR_VM_IP>:4000"
 
 Lastly, make sure that all the services you need to be running in order to make this work are indeed running correctly:
