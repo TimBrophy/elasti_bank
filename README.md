@@ -33,5 +33,20 @@ Lastly, make sure that all the services you need to be running in order to make 
 3) sudo systemctl status postgresql
 4) sudo systemctl status logstash
 
+## bank chat setup
+Check to see which containers are running (if any): 
+sudo docker container ls
+
+IF there are no containers at all, following the DOCKER instructions here to build one: 
+https://github.com/TimBrophy/bank-faq-openai/tree/main/python-flask-example
+
+Before running the Docker build and run commands, cd to 'bank-faq-openai/python-flask-example' otherwise the required manifests will not be found.
+
+Just to clear the cache, please restart both gunicorn and nginx (in that order):
+sudo systemctl restart gunicorn
+sudo systemctl restart nginx
+
+You should now find that your 'Chat' page loads correctly now. 
+
 ## data commands
 I'll be back to add this in a couple days. Got work to do.

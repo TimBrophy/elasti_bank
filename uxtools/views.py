@@ -124,7 +124,7 @@ def symantec_search(request):
                             "match": {
                                 "description": {
                                     "query": query_term,
-                                    "boost": 4
+                                    "boost": 6
                                 }
                             }
                         }
