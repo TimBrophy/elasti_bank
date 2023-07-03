@@ -10,12 +10,24 @@ At the moment, the source code for the application is house in this repo (the on
 ## elasti_bank vm instance
 1) login to the GCP console and make sure to choose 'elastic-sa' as your project;
 2) go to 'Machine images' and look for the LATEST version of the elasti_bank image, which is named in the following format: timb-elastibank-demo-dd/mm/yyyy
-3) create the VM and cd to the elasti_bank/config folder and update the .env file to point to your own Elasticsearch cluster by replacing the stored values in the following variables:
-ES_CLOUD_ID_SECRET="<YOUR_CLOUD_ID>"
-ES_PASS_SECRET="<YOUR_PASSWORD>"
-ES_USER_SECRET="<YOUR_USER>"
-APM_SECRET_TOKEN="<YOUR_APM_SECRET_TOKEN>"
-APM_SERVER_URL="<YOUR_APM_SERVER_URL>"
+3) create the VM and cd to the elasti_bank/config folder and update the .env file to point to your own Elasticsearch cluster by completing the .env details.
+
+The full .env config looks like this: 
+- USE_GKE_GCLOUD_AUTH_PLUGIN=True
+- GOOGLE_MAPS_SECRET=<YOUR_API_KEY>
+- ES_CLOUD_ID_SECRET=<YOUR_CLOUD_ID>                                 
+- ES_PASS_SECRET=<YOUR_PASSWORD>                          
+- ES_USER_SECRET=<YOUR_USER>         
+- DB_NAME=<LEAVE THE EXISTING VALUE AS IS>
+- DB_USER=<LEAVE THE EXISTING VALUE AS IS>
+- DB_PASS=<LEAVE THE EXISTING VALUE AS IS>
+- DB_HOST=<LEAVE THE EXISTING VALUE AS IS>
+- DB_PORT=<LEAVE THE EXISTING VALUE AS IS>
+- DJANGO_SECRET=<LEAVE THE EXISTING VALUE AS IS>
+- APM_SECRET_TOKEN=<YOUR_APM_SECRET_TOKEN>                 
+- APM_SERVER_URL=<YOUR_APM_SERVER_URL>       
+- FLASK_APP_URL=<LEAVE THE EXISTING VALUE AS IS>
+
 
 5) make sure you also update the Google Maps secret details to your own credentials:
 GOOGLE_MAPS_SECRET="<YOUR_SECRET_KEY>"
