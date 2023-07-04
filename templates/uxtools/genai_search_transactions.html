@@ -7,7 +7,7 @@
     <div class="card">
         <div class="card-body">
             <h2 class="title">Which categories of transactions would you like analyzed?</h2>
-            <form class="form-inline" action="{% url 'search-transactions' %}" method="get">
+            <form class="form-inline" action="{% url 'genai-search-transactions' %}" method="get">
                 <div class="form-group mb-2">
                     <label for="transaction-search-box" class="sr-only">Search</label>
                     <input type="text" class="form-control" id="transaction-search-box" name="q" placeholder="Search" value="{{ query }}" size="60">
