@@ -192,7 +192,7 @@ def gen_ai_search(request):
         'ai_response': ai_response
     }
 
-    return render(request, 'uxtools/search_transactions.html', context)
+    return render(request, 'uxtools/genai_search_transactions.html', context)
 
 
 
