@@ -19,7 +19,7 @@ from django.views.generic.base import TemplateView
 from activity.views import activity_home
 from bankaccounts.views import bankaccounts_home,bankaccount_application, success_page_view
 from transactions.views import debit_transaction, debit_success, transaction_detail, money_transfer, transaction_history
-from uxtools.views import transactions_map, symantec_search, chat_interface, reset_data_view
+from uxtools.views import transactions_map, symantec_search, chat_interface, reset_data_view, gen_ai_search
 from public.views import home
 from django.conf import settings
 from django.conf.urls.static import static
@@ -40,6 +40,7 @@ urlpatterns = [
     path('send-money/debit-success/<id>', debit_success, name='debit-success'),
     path('my-transactions/transaction-detail/<id>/<value>', transaction_detail, name='transaction-detail'),
     path('uxtools/search', symantec_search, name='search-transactions'),
+    path('uxtools/genai-search', gen_ai_search, name='genai-search-transactions'),
     path('transactions-map/', transactions_map, name='transactions-map'),
     path('chat/', chat_interface, name='chat'),
     path('reset-data/', reset_data_view, name='reset_data'),

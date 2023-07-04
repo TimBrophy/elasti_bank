@@ -1,0 +1,170 @@
+{% extends 'base.html' %}
+
+{% block title %}Transaction search{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="card">
+        <div class="card-body">
+            <h2 class="title">Which categories of transactions would you like analyzed?</h2>
+            <form class="form-inline" action="{% url 'search-transactions' %}" method="get">
+                <div class="form-group mb-2">
+                    <label for="transaction-search-box" class="sr-only">Search</label>
+                    <input type="text" class="form-control" id="transaction-search-box" name="q" placeholder="Search" value="{{ query }}" size="60">
+                    <div id="slider-range"></div>
+                    <input type="hidden" id="amount" name="amount">
+                </div>
+                <pre>  </pre>
+                <div class="form-group mb-2">
+                    <label for="start-date-picker" class="sr-only">Start Date</label>
+                    <input type="date" class="form-control" id="start-date-picker" name="start_date" value="{{ default_start_date }}">
+                </div>
+                <pre>  </pre>
+                <div class="form-group mb-2">
+                    <label for="end-date-picker" class="sr-only">End Date</label>
+                    <input type="date" class="form-control" id="end-date-picker" name="end_date" value="{{ default_end_date }}">
+                </div>
+                <pre>  </pre>
+                <button type="submit" class="btn btn-primary mb-2">Search</button>
+            </form>
+            <div id="searchbox-suggestions"></div>
+            <div class="card-body">
+                {% if not query %}
+                    <h2 class="title">Your favorite search terms:</h2>
+                    {% for i in history_agg %}
+                        <h3 class="title"> {{ i.key }} ({{ i.doc_count }} searches)</h3>
+                    {% endfor %}
+                {% endif %}
+            </div>
+            <div>
+                {{ ai_response }}
+            </div>
+            {% if transactions %}
+                <h2 class="title">Total spend for {{ query }}: {{ total_value }}</h2>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">Date and Time</th>
+                            <th scope="col">Type</th>
+                            <th scope="col">Description</th>
+                            <th scope="col">Value</th>
+                            <th scope="col">Recipient</th>
+                            <th scope="col">Relevance</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for transaction in transactions %}
+                        <tr>
+                            <th scope="row">{{ transaction.timestamp }}</th>
+                            <td>{{ transaction.type }}</td>
+                            <td>{{ transaction.description }}</td>
+                            <td>{% if transaction.type == 'Debit' %} -{% endif %}{{ transaction.value }}</td>
+                            <td>{{ transaction.recipient }}</td>
+                            <td>{{ transaction.score }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {% else %}
+                {% if query %}
+                    <div>
+                        <h2 class="title">Unfortunately we can't find any transactions that match your search term, why not try something else?</h2>
+                    </div>
+                {% endif %}
+            {% endif %}
+
+            <!-- Add Pagination -->
+            {% if transactions.has_other_pages %}
+            <nav>
+                <ul class="pagination">
+                    {% if transactions.has_previous %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page=1">&laquo; First</a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ transactions.previous_page_number }}">Previous</a>
+                    </li>
+                    {% endif %}
+
+                    <li class="page-item active">
+                        <a class="page-link" href="?page={{ transactions.number }}">{{ transactions.number }}</a>
+                    </li>
+
+                    {% if transactions.has_next %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ transactions.next_page_number }}">Next</a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ transactions.paginator.num_pages }}">Last &raquo;</a>
+                    </li>
+                    {% endif %}
+                </ul>
+            </nav>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block scripts %}
+<script>
+    $(function () {
+        var transactions = new Bloodhound({
+            datumTokenizer: Bloodhound.tokenizers.obj.whitespace('description', 'recipient_name'),
+            queryTokenizer: Bloodhound.tokenizers.whitespace,
+            remote: {
+                url: '/api/search/?q=%QUERY',
+                wildcard: '%QUERY'
+            }
+        });
+
+        $('#transaction-search-box').typeahead({
+            hint: true,
+            highlight: true,
+            minLength: 1
+        }, {
+            name: 'transactions',
+            display: function (item) {
+                return item.description + ' - ' + item.recipient_name;
+            },
+            source: transactions,
+            templates: {
+                empty: [
+                    '<div class="list-group-item">No transactions found.</div>'
+                ],
+                header: [
+                    '<div class="list-group-item">Transactions</div>'
+                ],
+                suggestion: function (item) {
+                    return '<a href="/transactions/' + item.id + '" class="list-group-item">' +
+                        '<h4 class="list-group-item-heading">' + item.description + '</h4>' +
+                        '<p class="list-group-item-text">' + item.recipient_name + '</p>' +
+                        '</a>';
+                }
+            }
+        });
+
+        // Add date range picker
+        var startDate = moment().subtract(3, 'months').startOf('day');
+        var endDate = moment().endOf('day');
+
+        $('#slider-range').daterangepicker({
+            startDate: startDate,
+            endDate: endDate,
+            maxDate: endDate,
+            ranges: {
+                'Last 7 days': [moment().subtract(7, 'days').startOf('day'), endDate],
+                'Last 30 days': [moment().subtract(30, 'days').startOf('day'), endDate],
+                'Last 90 days': [moment().subtract(90, 'days').startOf('day'), endDate]
+            },
+            locale: {
+                format: 'YYYY-MM-DD'
+            }
+        });
+
+        // Update hidden form input with selected date range
+        $('#slider-range').on('apply.daterangepicker', function(ev, picker) {
+            $('#amount').val(picker.startDate.format('YYYY-MM-DD') + ',' + picker.endDate.format('YYYY-MM-DD'));
+        });
+    });
+</script>
+{% endblock %}

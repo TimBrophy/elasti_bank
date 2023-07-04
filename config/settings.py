@@ -177,6 +177,8 @@ CHAT_URL = os.environ.get('FLASK_APP_URL')
 
 VECTOR_MODEL = ".elser_model_1"
 
+
+
 ELASTIC_APM = {
     # Set the required service name. Allowed characters:
     # a-z, A-Z, 0-9, -, _, and space
