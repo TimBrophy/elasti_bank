@@ -27,39 +27,25 @@
                 <pre>  </pre>
                 <button type="submit" class="btn btn-primary mb-2">Search</button>
             </form>
-            <div id="searchbox-suggestions"></div>
-            <div class="card-body">
-                {% if not query %}
-                    <h2 class="title">Your favorite search terms:</h2>
-                    {% for i in history_agg %}
-                        <h3 class="title"> {{ i.key }} ({{ i.doc_count }} searches)</h3>
-                    {% endfor %}
-                {% endif %}
-            </div>
             <div>
-                {{ ai_response }}
+                <h2>AI reponse</h2>
+                <p>{{ ai_response }}</p>
             </div>
             {% if transactions %}
-                <h2 class="title">Total spend for {{ query }}: {{ total_value }}</h2>
+                <h2 class="title">These transactions informed the response from the LLM:</h2>
                 <table class="table">
                     <thead>
                         <tr>
-                            <th scope="col">Date and Time</th>
-                            <th scope="col">Type</th>
                             <th scope="col">Description</th>
                             <th scope="col">Value</th>
-                            <th scope="col">Recipient</th>
                             <th scope="col">Relevance</th>
                         </tr>
                     </thead>
                     <tbody>
                         {% for transaction in transactions %}
                         <tr>
-                            <th scope="row">{{ transaction.timestamp }}</th>
-                            <td>{{ transaction.type }}</td>
                             <td>{{ transaction.description }}</td>
                             <td>{% if transaction.type == 'Debit' %} -{% endif %}{{ transaction.value }}</td>
-                            <td>{{ transaction.recipient }}</td>
                             <td>{{ transaction.score }}</td>
                         </tr>
                         {% endfor %}

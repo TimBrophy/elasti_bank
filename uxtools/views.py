@@ -1,5 +1,5 @@
 import os
-
+import re
 from django.contrib.auth.decorators import login_required
 from elasticsearch import Elasticsearch
 from django.conf import settings
@@ -11,8 +11,16 @@ from django.core.paginator import Paginator
 import uuid
 from django.core.management import call_command
 from langchain.llms import AzureOpenAI
-from langchain.prompts import ChatPromptTemplate, SystemMessagePromptTemplate, HumanMessagePromptTemplate
+from langchain.prompts import PromptTemplate
 from langchain.chains import LLMChain, SequentialChain
+
+
+def truncate_text(text, max_tokens):
+    tokens = text.split()
+    if len(tokens) <= max_tokens:
+        return text
+    return ' '.join(tokens[:max_tokens])
+
 
 @login_required
 def reset_data_view(request):
@@ -23,43 +31,17 @@ def reset_data_view(request):
 
     return render(request, 'uxtools/reset_data.html')
 
+
 @login_required
 def gen_ai_search(request):
     # This section is a repeat of the symantec search we did earlier.
-    # We are going to use the data we retreived here to prompt the LLM
+    # We are going to use the data we retrieved here to prompt the LLM
     transactions = []
-    search_history = []
-    total_value = 0
-
+    ai_response = []
     es = Elasticsearch(
         cloud_id=settings.ES_CLOUD_ID,
         http_auth=(settings.ES_USER, settings.ES_PASS)
     )
-    # handle the search history lookup
-    history_index = 'search_history'
-    search_history_query = {
-        "query": {
-            "bool": {
-                "must": [
-                    {"term": {"user.id": request.user.id}}
-                ]
-            }
-        },
-        "aggs": {
-            "query_strings": {  # Aggregations for query strings
-                "terms": {
-                    "field": "query_string.keyword",  # Aggregate by query string
-                    "size": 5  # Limit the number of categories to 100
-                }
-            }
-        }
-    }
-    history_fields = ["user_id", "query_string"]
-    history = es.search(index=history_index, body=search_history_query, size=10, fields=history_fields)
-    for hit in history['hits']['hits']:
-        search_history.append(hit['_source'])
-    query_agg = history['aggregations']['query_strings']['buckets']
-
     # handle the actual query
     query_term = request.GET.get('q', '')
 
@@ -96,15 +78,6 @@ def gen_ai_search(request):
         }
     }
     if query_term:
-        # commit the query term to the history index
-        search_record_id = uuid.uuid4()
-        search_history_record = {
-            'id': str(search_record_id),
-            'user.id': request.user.id,
-            'query_string': query_term
-        }
-        es.create(index=history_index, id=search_record_id, document=search_history_record)
-
         text_expansion_query = {
             "query": {
                 "bool": {
@@ -130,7 +103,7 @@ def gen_ai_search(request):
                             "match": {
                                 "description": {
                                     "query": query_term,
-                                    "boost": 6
+                                    "boost": 1
                                 }
                             }
                         }
@@ -149,34 +122,44 @@ def gen_ai_search(request):
             }
 
         }
-        fields = ["sor.id", "description", "recipient", "sub_type", "value"]
-        response = es.search(index='transactions', body=text_expansion_query, size=100, fields=fields)
+
+
+        fields = ["description", "value", "timestamp"]
+        response = es.search(index='transactions', body=text_expansion_query, size=20, fields=fields)
         for hit in response['hits']['hits']:
             if hit['_score'] > 5:
-                hit_data = hit['_source']
-                hit_data['score'] = hit['_score']
+                hit_data = {'description': hit['_source']['description'], 'value': hit['_source']['value'],
+                            'date': hit['_source']['timestamp'], 'score': hit['_score']}
                 transactions.append(hit_data)
-                total_value = total_value + hit_data['value']
+        # Now we invoke the LLM
+        os.environ["OPENAI_API_TYPE"] = "azure"
+        os.environ["OPENAI_API_VERSION"] = "2023-03-15-preview"
+        os.environ["OPENAI_API_BASE"] = "https://elasti-bank.openai.azure.com/"
+        os.environ["OPENAI_API_KEY"] = "128675f7cf91412eb60abdc2344ceddb"
 
-    # Now we invoke the LLM
-    os.environ["OPENAI_API_TYPE"] = "azure"
-    os.environ["OPENAI_API_VERSION"] = "2023-03-15-preview"
-    os.environ["OPENAI_API_BASE"] = "https://elasti-bank.openai.azure.com/"
-    os.environ["OPENAI_API_KEY"] = "128675f7cf91412eb60abdc2344ceddb"
+        llm = AzureOpenAI(
+            deployment_name="elasti-bank",
+            model_name="gpt-35-turbo",
+            temperature=0.1
+        )
+        template = PromptTemplate(
+            input_variables=['transactions'],
+            template='Analyse the following transactions and tell me how much money I spent in total and give me advice on '
+                     'how to spend less on this category: {transactions}'
+        )
+        print(template)
+        chain = LLMChain(llm=llm, prompt=template, verbose=True)
+        ai_response = chain.run(transactions=transactions)
+        print(ai_response)
+        regex_pattern = r"Total spend: \$([\d.]+) Recommendation: (.*)"
+        match = re.search(ai_response, regex_pattern)
+        if match:
+            total_spent = match.group(1)
+            recommendation = match.group(2)
+        else:
+            total_spent = 0
+            recommendation = 'I have no recommendations at this point'
 
-    llm = AzureOpenAI(
-        deployment_name="elasti-bank",
-        model_name="gpt-35-turbo",
-        temperature=0.7
-    )
-    template = 'You are a helpful assistant looks at financial transactions related to the category: {category} and you sum up the transactions and make suggestions about how to save me money.'
-    system_message_prompt = SystemMessagePromptTemplate.from_template(template)
-    human_template = "{text}"
-    human_message_prompt = HumanMessagePromptTemplate.from_template(human_template)
-    chat_prompt = ChatPromptTemplate.from_messages([system_message_prompt, human_message_prompt])
-    chain = LLMChain(llm=llm, prompt=chat_prompt)
-    ai_response = chain.run(category=query_term, text=transactions)
-    print(ai_response)
     paginator = Paginator(transactions, 50)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
@@ -186,10 +169,7 @@ def gen_ai_search(request):
         'query': query_term,
         'default_start_date': start_date.strftime('%Y-%m-%d'),
         'default_end_date': end_date.strftime('%Y-%m-%d'),
-        'history': search_history,
-        'history_agg': query_agg,
-        'total_value': total_value,
-        'ai_response': ai_response
+        'ai_response': ai_response,
     }
 
     return render(request, 'uxtools/genai_search_transactions.html', context)
