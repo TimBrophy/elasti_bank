@@ -15,6 +15,7 @@ from langchain.prompts import PromptTemplate
 from langchain.chains import LLMChain, SequentialChain
 
 
+
 def truncate_text(text, max_tokens):
     tokens = text.split()
     if len(tokens) <= max_tokens:
@@ -37,7 +38,7 @@ def gen_ai_search(request):
     # This section is a repeat of the symantec search we did earlier.
     # We are going to use the data we retrieved here to prompt the LLM
     transactions = []
-    ai_response = []
+    ai_response = 'Awaiting input'
     es = Elasticsearch(
         cloud_id=settings.ES_CLOUD_ID,
         http_auth=(settings.ES_USER, settings.ES_PASS)
@@ -135,7 +136,7 @@ def gen_ai_search(request):
         os.environ["OPENAI_API_TYPE"] = "azure"
         os.environ["OPENAI_API_VERSION"] = "2023-03-15-preview"
         os.environ["OPENAI_API_BASE"] = "https://elasti-bank.openai.azure.com/"
-        os.environ["OPENAI_API_KEY"] = "128675f7cf91412eb60abdc2344ceddb"
+        os.environ["OPENAI_API_KEY"] = settings.OPENAI_KEY
 
         llm = AzureOpenAI(
             deployment_name="elasti-bank",

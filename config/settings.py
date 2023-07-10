@@ -151,8 +151,6 @@ MEDIA_URL = 'media/'
 # Path where media is stored
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
-
-
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
 
 CRISPY_TEMPLATE_PACK = 'bootstrap5'
@@ -166,15 +164,11 @@ FAKER_PROVIDERS = None  # faker.DEFAULT_PROVIDERS is loaded (all)
 ES_CLOUD_ID = os.environ.get('ES_CLOUD_ID_SECRET')
 ES_USER = os.environ.get('ES_USER_SECRET')
 ES_PASS = os.environ.get('ES_PASS_SECRET')
-
 APPSEARCH_ENDPOINT = os.environ.get('APPSEARCH_ENDPOINT_SECRET')
 APPSEARCH_AUTH = os.environ.get('APPSEARCH_AUTH_SECRET')
-
 GOOGLE_MAPS_API_KEY = os.environ.get('GOOGLE_MAPS_SECRET')
 OPENAI_KEY = os.environ.get('OPENAI_SECRET')
-
 CHAT_URL = os.environ.get('FLASK_APP_URL')
-
 VECTOR_MODEL = ".elser_model_1"
 
 
