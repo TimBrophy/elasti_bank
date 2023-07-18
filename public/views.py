@@ -92,7 +92,7 @@ def home(request):
             response = es.search(index='transactions', body=vector_query, size=5, fields=fields)
 
             for hit in response['hits']['hits']:
-                if hit['_score'] > 5:
+                if hit['_score'] > 7.5:
                     hit_data = hit['_source']
                     hit_data['campaign_name'] = i.name
                     hit_data['score'] = hit['_score']
