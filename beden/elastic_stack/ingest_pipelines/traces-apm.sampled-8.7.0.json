@@ -1,0 +1,25 @@
+{
+ "_meta": {
+  "managed": true,
+  "managed_by": "fleet",
+  "package": {
+   "name": "apm"
+  }
+ },
+ "description": "Pipeline for ingesting APM tail-sampled trace IDs.",
+ "processors": [
+  {
+   "rename": {
+    "field": "observer.id",
+    "ignore_missing": true,
+    "target_field": "agent.ephemeral_id"
+   }
+  },
+  {
+   "pipeline": {
+    "ignore_missing_pipeline": true,
+    "name": "traces-apm.sampled@custom"
+   }
+  }
+ ]
+}

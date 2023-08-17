@@ -1,0 +1,30 @@
+{
+ "in_use_by": {
+  "composable_templates": [],
+  "data_streams": [],
+  "indices": []
+ },
+ "modified_date": "2023-06-09T14:16:13.042Z",
+ "policy": {
+  "phases": {
+   "delete": {
+    "actions": {
+     "delete": {
+      "delete_searchable_snapshot": true
+     }
+    },
+    "min_age": "1d"
+   },
+   "hot": {
+    "actions": {
+     "rollover": {
+      "max_age": "1d",
+      "max_primary_shard_size": "50gb"
+     }
+    },
+    "min_age": "0ms"
+   }
+  }
+ },
+ "version": 8
+}

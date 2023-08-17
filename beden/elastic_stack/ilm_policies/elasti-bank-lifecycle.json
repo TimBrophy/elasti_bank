@@ -1,0 +1,33 @@
+{
+ "in_use_by": {
+  "composable_templates": [
+   "elasti-bank-transactions"
+  ],
+  "data_streams": [],
+  "indices": [
+   "transactions"
+  ]
+ },
+ "modified_date": "2023-06-29T07:55:13.758Z",
+ "policy": {
+  "phases": {
+   "delete": {
+    "actions": {
+     "delete": {
+      "delete_searchable_snapshot": true
+     }
+    },
+    "min_age": "180d"
+   },
+   "hot": {
+    "actions": {
+     "set_priority": {
+      "priority": 100
+     }
+    },
+    "min_age": "0ms"
+   }
+  }
+ },
+ "version": 5
+}

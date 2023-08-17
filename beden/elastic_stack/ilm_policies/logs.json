@@ -1,0 +1,38 @@
+{
+ "in_use_by": {
+  "composable_templates": [
+   "logs-endpoint.events.process",
+   ".logs-endpoint.action.responses",
+   "logs-endpoint.events.library",
+   ".logs-endpoint.actions",
+   "logs-endpoint.events.api",
+   "logs-endpoint.events.security",
+   "logs-endpoint.events.registry",
+   "logs",
+   "logs-endpoint.alerts",
+   "logs-endpoint.events.network",
+   "logs-endpoint.events.file"
+  ],
+  "data_streams": [],
+  "indices": []
+ },
+ "modified_date": "2023-03-21T15:01:00.280Z",
+ "policy": {
+  "_meta": {
+   "description": "default policy for the logs index template installed by x-pack",
+   "managed": true
+  },
+  "phases": {
+   "hot": {
+    "actions": {
+     "rollover": {
+      "max_age": "30d",
+      "max_primary_shard_size": "50gb"
+     }
+    },
+    "min_age": "0ms"
+   }
+  }
+ },
+ "version": 1
+}

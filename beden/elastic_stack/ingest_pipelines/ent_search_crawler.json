@@ -1,0 +1,36 @@
+{
+ "description": "Elastic Crawler content extraction ingest pipeline",
+ "processors": [
+  {
+   "attachment": {
+    "field": "_attachment",
+    "if": "ctx?._extract_binary_content == true",
+    "ignore_missing": true,
+    "indexed_chars_field": "_attachment_indexed_chars",
+    "target_field": "_extracted_attachment"
+   }
+  },
+  {
+   "set": {
+    "copy_from": "_extracted_attachment.content",
+    "field": "body_content",
+    "if": "ctx?._extract_binary_content == true",
+    "ignore_empty_value": true
+   }
+  },
+  {
+   "remove": {
+    "field": [
+     "_attachment",
+     "_attachment_indexed_chars",
+     "_extracted_attachment",
+     "_extract_binary_content",
+     "_reduce_whitespace",
+     "_run_ml_inference"
+    ],
+    "ignore_missing": true
+   }
+  }
+ ],
+ "version": 2
+}

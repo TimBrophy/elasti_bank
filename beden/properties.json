@@ -1,0 +1,9 @@
+{
+  "es_version": "8.8.0",
+  "name": "elasti-bank",
+  "notes": "Dumped from cluster e35d69a89b5e453d9dcc892922e54cff on 2023-07-05T10:14:05+01:00",
+  "scripts": [],
+  "secrets_keys": [
+   "gcs.client.default.credentials_file"
+  ]
+ }

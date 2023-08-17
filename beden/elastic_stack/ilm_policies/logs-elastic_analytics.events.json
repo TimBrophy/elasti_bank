@@ -1,0 +1,39 @@
+{
+ "in_use_by": {
+  "composable_templates": [
+   "logs-elastic_analytics.events"
+  ],
+  "data_streams": [],
+  "indices": []
+ },
+ "modified_date": "2023-04-03T11:02:19.878Z",
+ "policy": {
+  "phases": {
+   "delete": {
+    "actions": {
+     "delete": {
+      "delete_searchable_snapshot": true
+     }
+    },
+    "min_age": "180d"
+   },
+   "hot": {
+    "actions": {
+     "forcemerge": {
+      "max_num_segments": 1
+     },
+     "readonly": {},
+     "rollover": {
+      "max_age": "30d",
+      "max_size": "3gb"
+     },
+     "set_priority": {
+      "priority": 100
+     }
+    },
+    "min_age": "0ms"
+   }
+  }
+ },
+ "version": 1
+}

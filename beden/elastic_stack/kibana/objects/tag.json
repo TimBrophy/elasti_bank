@@ -1,0 +1,24 @@
+{
+  "objects": [
+   {
+    "attributes": {
+     "color": "#f6aea7",
+     "description": "Security Solution auto-generated tag",
+     "name": "Security Solution"
+    },
+    "coreMigrationVersion": "8.8.0",
+    "created_at": "2023-05-08T14:35:08.272Z",
+    "id": "87da7700-edad-11ed-ab15-dfc4d4501eb5",
+    "managed": false,
+    "references": [],
+    "sort": [
+     1683556508272,
+     199
+    ],
+    "type": "tag",
+    "typeMigrationVersion": "8.0.0",
+    "updated_at": "2023-05-08T14:35:08.272Z",
+    "version": "WzEwNDcsMl0="
+   }
+  ]
+ }

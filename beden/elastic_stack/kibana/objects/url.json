@@ -1,0 +1,70 @@
+{
+  "objects": [
+   {
+    "attributes": {
+     "accessCount": 0,
+     "accessDate": 1680530163234,
+     "createDate": 1680530163234,
+     "locatorJSON": "{\"id\":\"LEGACY_SHORT_URL_LOCATOR\",\"version\":\"8.7.0\",\"state\":{\"url\":\"/app/dashboards#/view/c0691c10-d21a-11ed-8741-d76696a2e4fd?_g=(refreshInterval:(pause:!t,value:60000),time:(from:now-6M,to:now))\u0026_a=()\"}}",
+     "slug": "3oC5U",
+     "url": ""
+    },
+    "coreMigrationVersion": "8.8.0",
+    "created_at": "2023-04-03T13:56:03.235Z",
+    "id": "45a4f730-d227-11ed-8741-d76696a2e4fd",
+    "managed": false,
+    "references": [],
+    "sort": [
+     1680530163235,
+     33
+    ],
+    "type": "url",
+    "updated_at": "2023-04-03T13:56:03.235Z",
+    "version": "Wzg0NCwyXQ=="
+   },
+   {
+    "attributes": {
+     "accessCount": 0,
+     "accessDate": 1681219956151,
+     "createDate": 1681219956151,
+     "locatorJSON": "{\"id\":\"LEGACY_SHORT_URL_LOCATOR\",\"version\":\"8.7.0\",\"state\":{\"url\":\"/app/dashboards#/view/c0691c10-d21a-11ed-8741-d76696a2e4fd?embed=true\u0026_g=(refreshInterval:(pause:!t,value:60000),time:(from:now-6M,to:now))\u0026_a=()\"}}",
+     "slug": "IdXtj",
+     "url": ""
+    },
+    "coreMigrationVersion": "8.8.0",
+    "created_at": "2023-04-11T13:32:36.152Z",
+    "id": "52432380-d86d-11ed-ab15-dfc4d4501eb5",
+    "managed": false,
+    "references": [],
+    "sort": [
+     1681219956152,
+     53
+    ],
+    "type": "url",
+    "updated_at": "2023-04-11T13:32:36.152Z",
+    "version": "Wzg4NSwyXQ=="
+   },
+   {
+    "attributes": {
+     "accessCount": 0,
+     "accessDate": 1681224705669,
+     "createDate": 1681224705669,
+     "locatorJSON": "{\"id\":\"LEGACY_SHORT_URL_LOCATOR\",\"version\":\"8.7.0\",\"state\":{\"url\":\"/app/dashboards#/view/c0691c10-d21a-11ed-8741-d76696a2e4fd?_g=(refreshInterval:(pause:!t,value:60000),time:(from:now-6M,to:now))\u0026_a=()\"}}",
+     "slug": "b9agK",
+     "url": ""
+    },
+    "coreMigrationVersion": "8.8.0",
+    "created_at": "2023-04-11T14:51:45.669Z",
+    "id": "6131eb50-d878-11ed-ab15-dfc4d4501eb5",
+    "managed": false,
+    "references": [],
+    "sort": [
+     1681224705669,
+     54
+    ],
+    "type": "url",
+    "updated_at": "2023-04-11T14:51:45.669Z",
+    "version": "Wzg4NiwyXQ=="
+   }
+  ]
+ }

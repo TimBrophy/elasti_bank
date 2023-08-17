@@ -1,0 +1,36 @@
+{
+ "description": "Enterprise Search customizable ingest pipeline for the 'search-bank-faqs' index",
+ "processors": [
+  {
+   "set": {
+    "copy_from": "body_content",
+    "field": "content"
+   }
+  },
+  {
+   "set": {
+    "copy_from": "title",
+    "field": "name"
+   }
+  },
+  {
+   "set": {
+    "copy_from": "title",
+    "field": "summary"
+   }
+  },
+  {
+   "set": {
+    "field": "category",
+    "value": "faq"
+   }
+  },
+  {
+   "set": {
+    "field": "rolePermissions",
+    "value": "[\"demo\", \"manager\"]"
+   }
+  }
+ ],
+ "version": 1
+}
