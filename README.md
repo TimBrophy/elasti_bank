@@ -7,6 +7,16 @@ There are two aspects of the demo environment:
 
 At the moment, the source code for the application is house in this repo (the one you're looking at right now) and can be built from a machine image in the Elastic-SA project, but the Elasticsearch piece is available as a snapshot - although the process for distribution hasn't been figured out yet in this version.
 
+## Elasticsearch deployment 
+
+Use beden to deploy the Elasticsearch deployment. 
+
+You can find instructions [here](https://github.com/elastic/beden) to configure beden if you have never done. 
+
+Once beden is configured, navigate to `./beden` folder and run `beden deploy`. 
+
+The command should take a few minutes to complete. At the end of the process the deployment details are printed in the terminal. Save them to use when configuring the elastic_bank vm instance. 
+
 ## elasti_bank vm instance
 1) login to the GCP console and make sure to choose 'elastic-sa' as your project;
 2) go to 'Machine images' and look for the LATEST version of the elasti_bank image, which is named in the following format: timb-elastibank-demo-dd/mm/yyyy

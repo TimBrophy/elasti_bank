@@ -77,7 +77,7 @@ class Command(BaseCommand):
         complete_value_df = pd.DataFrame(columns=['type', 'amount'])
         complete_value_data = []
         for u in users:
-
+            print(u)
             if u.income_level == "high":
                 credit_transaction_range = [15000, 40000]
                 debit_transaction_range = [2000, 10000]

@@ -1,0 +1,28 @@
+{
+  "objects": [
+   {
+    "attributes": {
+     "apmIndices": {
+      "error": "ctb-observability:logs-apm*",
+      "metric": "ctb-observability:metrics-apm*",
+      "span": "ctb-observability:traces-apm*",
+      "transaction": "ctb-observability:traces-apm*"
+     },
+     "isSpaceAware": true
+    },
+    "coreMigrationVersion": "8.8.0",
+    "created_at": "2023-06-07T09:44:16.899Z",
+    "id": "apm-indices",
+    "managed": false,
+    "references": [],
+    "sort": [
+     1686131056899,
+     798
+    ],
+    "type": "apm-indices",
+    "typeMigrationVersion": "8.2.0",
+    "updated_at": "2023-06-07T09:44:16.899Z",
+    "version": "WzE4NDk3LDJd"
+   }
+  ]
+ }

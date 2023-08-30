@@ -1,0 +1,313 @@
+{
+  "objects": [
+   {
+    "attributes": {
+     "fieldAttrs": "{\"Activity type\":{\"count\":1},\"id\":{\"count\":2}}",
+     "fieldFormatMap": "{}",
+     "fields": "[]",
+     "name": "interactions",
+     "runtimeFieldMap": "{}",
+     "sourceFilters": "[]",
+     "timeFieldName": "created_at",
+     "title": "interactions*",
+     "typeMeta": "{}"
+    },
+    "coreMigrationVersion": "8.8.0",
+    "created_at": "2023-04-05T13:58:31.933Z",
+    "id": "039470a3-3049-4ea8-8013-8c0dc9542762",
+    "managed": false,
+    "references": [],
+    "sort": [
+     1687861645430,
+     32
+    ],
+    "type": "index-pattern",
+    "typeMigrationVersion": "8.0.0",
+    "updated_at": "2023-06-27T10:27:25.430Z",
+    "version": "WzI1MzIsNF0="
+   },
+   {
+    "attributes": {
+     "fieldAttrs": "{\"user_id\":{\"count\":1}}",
+     "fieldFormatMap": "{}",
+     "fields": "[]",
+     "name": "bank-accounts",
+     "runtimeFieldMap": "{}",
+     "sourceFilters": "[]",
+     "timeFieldName": "created_at",
+     "title": "bank-accounts*",
+     "typeMeta": "{}"
+    },
+    "coreMigrationVersion": "8.8.0",
+    "created_at": "2023-05-14T06:58:03.565Z",
+    "id": "23d11544-5e6f-4b61-bc71-2ef0a08eafd1",
+    "managed": false,
+    "references": [],
+    "sort": [
+     1687860424690,
+     33
+    ],
+    "type": "index-pattern",
+    "typeMigrationVersion": "8.0.0",
+    "updated_at": "2023-06-27T10:07:04.690Z",
+    "version": "WzI1MDMsNF0="
+   },
+   {
+    "attributes": {
+     "fieldAttrs": "{}",
+     "fieldFormatMap": "{}",
+     "fields": "[]",
+     "name": "filebeat-*",
+     "runtimeFieldMap": "{}",
+     "sourceFilters": "[]",
+     "timeFieldName": "@timestamp",
+     "title": "ctb-observability:filebeat-*",
+     "typeMeta": "{}"
+    },
+    "coreMigrationVersion": "8.8.0",
+    "created_at": "2023-06-07T09:35:19.464Z",
+    "id": "44df2952-ac7b-47c0-aeec-a1e25c9b3fd9",
+    "managed": false,
+    "references": [],
+    "sort": [
+     1686130648421,
+     19
+    ],
+    "type": "index-pattern",
+    "typeMigrationVersion": "8.0.0",
+    "updated_at": "2023-06-07T09:37:28.421Z",
+    "version": "Wzc3MywyXQ=="
+   },
+   {
+    "attributes": {
+     "fieldAttrs": "{}",
+     "fieldFormatMap": "{}",
+     "fields": "[]",
+     "name": "metricbeat-*",
+     "runtimeFieldMap": "{}",
+     "sourceFilters": "[]",
+     "timeFieldName": "@timestamp",
+     "title": "ctb-observability:metricbeat-*",
+     "typeMeta": "{}"
+    },
+    "coreMigrationVersion": "8.8.0",
+    "created_at": "2023-06-07T09:39:16.694Z",
+    "id": "4c82519f-ad13-402f-9655-0ca18dd81d59",
+    "managed": false,
+    "references": [],
+    "sort": [
+     1686130756694,
+     18
+    ],
+    "type": "index-pattern",
+    "typeMigrationVersion": "8.0.0",
+    "updated_at": "2023-06-07T09:39:16.694Z",
+    "version": "Wzc3OCwyXQ=="
+   },
+   {
+    "attributes": {
+     "fieldAttrs": "{\"sor_id\":{\"count\":4},\"description\":{\"count\":3},\"description-vector\":{\"count\":2},\"timestamp\":{\"count\":1},\"@timestamp\":{\"count\":2},\"bank_account\":{\"count\":1},\"category\":{\"count\":2},\"sub_type\":{\"count\":1},\"ml.model_id\":{\"count\":1},\"ml.tokens\":{\"count\":1},\"user.id\":{\"count\":1}}",
+     "fieldFormatMap": "{}",
+     "fields": "[]",
+     "name": "transactions",
+     "runtimeFieldMap": "{}",
+     "sourceFilters": "[]",
+     "timeFieldName": "timestamp",
+     "title": "transactions*",
+     "typeMeta": "{}"
+    },
+    "coreMigrationVersion": "8.8.0",
+    "created_at": "2023-05-14T07:52:26.906Z",
+    "id": "5c96bcdf-80bf-4e99-bedd-62bacf5184b3",
+    "managed": false,
+    "references": [],
+    "sort": [
+     1687860394700,
+     31
+    ],
+    "type": "index-pattern",
+    "typeMigrationVersion": "8.0.0",
+    "updated_at": "2023-06-27T10:06:34.700Z",
+    "version": "WzI1MDIsNF0="
+   },
+   {
+    "attributes": {
+     "allowNoIndex": true,
+     "fieldAttrs": "{}",
+     "fieldFormatMap": "{\"trace.id\":{\"id\":\"url\",\"params\":{\"urlTemplate\":\"apm/link-to/trace/{{value}}\",\"labelTemplate\":\"{{value}}\"}},\"transaction.id\":{\"id\":\"url\",\"params\":{\"urlTemplate\":\"apm/link-to/transaction/{{value}}\",\"labelTemplate\":\"{{value}}\"}},\"transaction.duration.us\":{\"id\":\"duration\",\"params\":{\"inputFormat\":\"microseconds\",\"outputFormat\":\"asMilliseconds\",\"showSuffix\":true,\"useShortSuffix\":true,\"outputPrecision\":2,\"includeSpaceWithSuffix\":true}}}",
+     "fields": "[]",
+     "name": "APM",
+     "runtimeFieldMap": "{}",
+     "sourceFilters": "[]",
+     "timeFieldName": "@timestamp",
+     "title": "ctb-observability:traces-apm*,ctb-observability:logs-apm*,ctb-observability:metrics-apm*",
+     "typeMeta": "{}"
+    },
+    "coreMigrationVersion": "8.8.0",
+    "created_at": "2023-06-07T09:44:28.104Z",
+    "id": "apm_static_index_pattern_id",
+    "managed": false,
+    "references": [],
+    "sort": [
+     1686131069459,
+     17
+    ],
+    "type": "index-pattern",
+    "typeMigrationVersion": "8.0.0",
+    "updated_at": "2023-06-07T09:44:29.459Z",
+    "version": "Wzc4MywyXQ=="
+   },
+   {
+    "attributes": {
+     "allowNoIndex": true,
+     "fieldAttrs": "{}",
+     "fieldFormatMap": "{}",
+     "fields": "[]",
+     "name": "behavioral_analytics.events-demo",
+     "runtimeFieldMap": "{}",
+     "sourceFilters": "[]",
+     "timeFieldName": "@timestamp",
+     "title": "behavioral_analytics-events-demo",
+     "typeMeta": "{}"
+    },
+    "coreMigrationVersion": "8.8.0",
+    "created_at": "2023-06-12T14:12:27.771Z",
+    "id": "e19db256-10ee-4ff6-a660-ac5f64d4f397",
+    "managed": false,
+    "references": [],
+    "sort": [
+     1686579147771,
+     30
+    ],
+    "type": "index-pattern",
+    "typeMigrationVersion": "8.0.0",
+    "updated_at": "2023-06-12T14:12:27.771Z",
+    "version": "WzE1ODcsNF0="
+   },
+   {
+    "attributes": {
+     "fieldAttrs": "{\"products.manufacturer\":{\"count\":1},\"products.price\":{\"count\":1},\"products.product_name\":{\"count\":1},\"total_quantity\":{\"count\":1}}",
+     "fieldFormatMap": "{\"taxful_total_price\":{\"id\":\"number\",\"params\":{\"pattern\":\"$0,0.[00]\"}},\"products.price\":{\"id\":\"number\",\"params\":{\"pattern\":\"$0,0.00\"}},\"taxless_total_price\":{\"id\":\"number\",\"params\":{\"pattern\":\"$0,0.00\"}},\"products.taxless_price\":{\"id\":\"number\",\"params\":{\"pattern\":\"$0,0.00\"}},\"products.taxful_price\":{\"id\":\"number\",\"params\":{\"pattern\":\"$0,0.00\"}},\"products.min_price\":{\"id\":\"number\",\"params\":{\"pattern\":\"$0,0.00\"}},\"products.base_unit_price\":{\"id\":\"number\",\"params\":{\"pattern\":\"$0,0.00\"}},\"products.base_price\":{\"id\":\"number\",\"params\":{\"pattern\":\"$0,0.00\"}}}",
+     "fields": "[]",
+     "name": "Kibana Sample Data eCommerce",
+     "runtimeFieldMap": "{}",
+     "timeFieldName": "order_date",
+     "title": "kibana_sample_data_ecommerce",
+     "typeMeta": "{}"
+    },
+    "coreMigrationVersion": "8.8.0",
+    "created_at": "2023-04-03T11:41:33.907Z",
+    "id": "ff959d40-b880-11e8-a6d9-e546fe2bba5f",
+    "managed": false,
+    "references": [],
+    "sort": [
+     1680522093907,
+     5
+    ],
+    "type": "index-pattern",
+    "typeMigrationVersion": "8.0.0",
+    "updated_at": "2023-04-03T11:41:33.907Z",
+    "version": "WzI1LDJd"
+   },
+   {
+    "attributes": {
+     "fieldAttrs": "{\"location\":{\"count\":1},\"Username\":{\"count\":2}}",
+     "fieldFormatMap": "{}",
+     "fields": "[]",
+     "name": "account-applications",
+     "runtimeFieldMap": "{}",
+     "sourceFilters": "[]",
+     "timeFieldName": "created_at",
+     "title": "account-applications*",
+     "typeMeta": "{}"
+    },
+    "coreMigrationVersion": "8.8.0",
+    "created_at": "2023-04-03T17:40:45.685Z",
+    "id": "ffc10d2b-4a90-4e26-9a7e-6ec7e36b5174",
+    "managed": false,
+    "references": [],
+    "sort": [
+     1684041825044,
+     14
+    ],
+    "type": "index-pattern",
+    "typeMigrationVersion": "8.0.0",
+    "updated_at": "2023-05-14T05:23:45.044Z",
+    "version": "WzMzLDJd"
+   },
+   {
+    "attributes": {
+     "allowNoIndex": true,
+     "fieldAttrs": "{}",
+     "fieldFormatMap": "{}",
+     "fields": "[]",
+     "name": "logs-*",
+     "runtimeFieldMap": "{}",
+     "sourceFilters": "[]",
+     "timeFieldName": "@timestamp",
+     "title": "logs-*",
+     "typeMeta": "{}"
+    },
+    "coreMigrationVersion": "8.8.0",
+    "created_at": "2023-05-08T14:35:10.133Z",
+    "id": "logs-*",
+    "managed": false,
+    "references": [],
+    "sort": [
+     1686130471507,
+     20
+    ],
+    "type": "index-pattern",
+    "typeMigrationVersion": "8.0.0",
+    "updated_at": "2023-06-07T09:34:31.507Z",
+    "version": "Wzc3MCwyXQ=="
+   },
+   {
+    "attributes": {
+     "allowNoIndex": true,
+     "timeFieldName": "@timestamp",
+     "title": "metrics-*"
+    },
+    "coreMigrationVersion": "8.8.0",
+    "created_at": "2023-05-08T14:35:10.133Z",
+    "id": "metrics-*",
+    "managed": false,
+    "references": [],
+    "sort": [
+     1683556510133,
+     10
+    ],
+    "type": "index-pattern",
+    "typeMigrationVersion": "8.0.0",
+    "updated_at": "2023-05-08T14:35:10.133Z",
+    "version": "WzMwLDJd"
+   },
+   {
+    "attributes": {
+     "allowNoIndex": true,
+     "fieldAttrs": "{}",
+     "fieldFormatMap": "{}",
+     "fields": "[]",
+     "name": ".alerts-security.alerts-default,apm-*-transaction*,auditbeat-*,endgame-*,filebeat-*,logs-*,packetbeat-*,traces-apm*,winlogbeat-*,-*elastic-cloud-logs-*",
+     "runtimeFieldMap": "{}",
+     "sourceFilters": "[]",
+     "timeFieldName": "@timestamp",
+     "title": ".alerts-security.alerts-default,apm-*-transaction*,auditbeat-*,endgame-*,filebeat-*,logs-*,packetbeat-*,traces-apm*,winlogbeat-*,-*elastic-cloud-logs-*",
+     "typeMeta": "{}"
+    },
+    "coreMigrationVersion": "8.8.0",
+    "created_at": "2023-05-08T14:35:06.046Z",
+    "id": "security-solution-default",
+    "managed": false,
+    "references": [],
+    "sort": [
+     1683556506046,
+     11
+    ],
+    "type": "index-pattern",
+    "typeMigrationVersion": "8.0.0",
+    "updated_at": "2023-05-08T14:35:06.046Z",
+    "version": "WzMxLDJd"
+   }
+  ]
+ }

@@ -1,0 +1,5 @@
+{
+ "description": "Enterprise Search customizable ingest pipeline for the 'search-transactions' index",
+ "processors": [],
+ "version": 1
+}

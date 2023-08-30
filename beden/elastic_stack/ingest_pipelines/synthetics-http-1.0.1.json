@@ -1,0 +1,17 @@
+{
+ "_meta": {
+  "managed": true,
+  "managed_by": "fleet",
+  "package": {
+   "name": "synthetics"
+  }
+ },
+ "processors": [
+  {
+   "pipeline": {
+    "ignore_missing_pipeline": true,
+    "name": "synthetics-http@custom"
+   }
+  }
+ ]
+}

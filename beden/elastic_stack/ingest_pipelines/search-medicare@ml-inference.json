@@ -1,0 +1,11 @@
+{
+ "description": "Enterprise Search Machine Learning Inference pipeline for the 'search-medicare' index",
+ "processors": [
+  {
+   "pipeline": {
+    "name": "ml-inference-medicare"
+   }
+  }
+ ],
+ "version": 1
+}

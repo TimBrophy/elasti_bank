@@ -1,0 +1,64 @@
+{
+ "processors": [
+  {
+   "remove": {
+    "field": "ml.inference.description-vector",
+    "ignore_missing": true
+   }
+  },
+  {
+   "remove": {
+    "field": "description-vector",
+    "ignore_missing": true
+   }
+  },
+  {
+   "inference": {
+    "field_map": {
+     "description": "text_field"
+    },
+    "model_id": "sentence-transformers__all-distilroberta-v1",
+    "on_failure": [
+     {
+      "append": {
+       "field": "_source._ingest.inference_errors",
+       "value": [
+        {
+         "message": "Processor 'inference' in pipeline 'ml-inference-description-vector' failed with message '{{ _ingest.on_failure_message }}'",
+         "pipeline": "ml-inference-description-vector",
+         "timestamp": "{{{ _ingest.timestamp }}}"
+        }
+       ]
+      }
+     }
+    ],
+    "target_field": "ml.inference.description-vector"
+   }
+  },
+  {
+   "append": {
+    "field": "_source._ingest.processors",
+    "value": [
+     {
+      "model_version": "8.7.0",
+      "pipeline": "ml-inference-description-vector",
+      "processed_timestamp": "{{{ _ingest.timestamp }}}",
+      "types": [
+       "pytorch",
+       "text_embedding"
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "set": {
+    "copy_from": "ml.inference.description-vector.predicted_value",
+    "description": "Copy the predicted_value to 'description-vector'",
+    "field": "description-vector",
+    "if": "ctx?.ml?.inference != null \u0026\u0026 ctx.ml.inference['description-vector'] != null"
+   }
+  }
+ ],
+ "version": 1
+}

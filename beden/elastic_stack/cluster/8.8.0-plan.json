@@ -1,0 +1,120 @@
+{
+  "metadata": {
+   "system_owned": false
+  },
+  "name": "",
+  "resources": {
+   "elasticsearch": [
+    {
+     "plan": {
+      "autoscaling_enabled": false,
+      "cluster_topology": [
+       {
+        "elasticsearch": {
+         "enabled_built_in_plugins": null,
+         "user_settings_yaml": ""
+        },
+        "instance_configuration_id": "gcp.data.highcpu.1",
+        "node_roles": [
+          "data_hot",
+          "data_content",
+          "master",
+          "ingest",
+          "remote_cluster_client",
+          "transform"
+        ],
+        "size": {
+         "resource": "memory",
+         "value": 8192
+         },
+         "id": "hot_content",
+         "zone_count": 2
+       },
+       {
+         "id": "ml",
+         "elasticsearch": {
+         "enabled_built_in_plugins": null,
+         "user_settings_yaml": ""
+          },
+         "instance_configuration_id": "gcp.ml.1",
+         "node_roles": [
+           "ml",
+           "remote_cluster_client"
+         ],
+         "size": {
+           "resource": "memory",
+           "value": 4096
+         },
+         "zone_count": 1
+       }
+      ],
+      "deployment_template": {
+       "id": "gcp-compute-optimized-v3"
+      },
+      "elasticsearch": {
+       "version": "8.8.0"
+      },
+      "transient": {}
+     },
+     "ref_id": "main-elasticsearch",
+     "region": ""
+    }
+   ],
+   "kibana": [
+    {
+     "elasticsearch_cluster_ref_id": "main-elasticsearch",
+     "plan": {
+      "cluster_topology": [
+       {
+        "instance_configuration_id": "gcp.kibana.1",
+        "size": {
+         "resource": "memory",
+         "value": 1024
+        },
+        "zone_count": 1
+       }
+      ],
+      "kibana": {
+       "user_settings_yaml": "",
+       "version": "8.8.0"
+      },
+      "transient": {}
+     },
+     "ref_id": "main-kibana",
+     "region": ""
+    }
+   ],
+   "integrations_server": [
+    {
+      "region": "",
+      "ref_id": "main-integrations_server",
+      "elasticsearch_cluster_ref_id": "main-elasticsearch",
+      "plan": {
+        "cluster_topology": [
+          {
+            "instance_configuration_id": "gcp.integrationsserver.1",
+            "zone_count": 1,
+            "integrations_server": {
+              "system_settings": {
+                "debug_enabled": false
+              }
+            },
+            "size": {
+              "resource": "memory",
+              "value": 1024
+            }
+          }
+        ],
+        "integrations_server": {
+          "version": "8.8.0"
+        },
+        "transient": {
+          "strategy": {
+            "autodetect": {}
+          }
+        }
+      }
+    }
+  ]
+  }
+ }

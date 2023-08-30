@@ -1,0 +1,42 @@
+{
+ "in_use_by": {
+  "composable_templates": [
+   "synthetics-http"
+  ],
+  "data_streams": [],
+  "indices": []
+ },
+ "modified_date": "2023-05-26T07:33:30.830Z",
+ "policy": {
+  "_meta": {
+   "managed": true,
+   "managed_by": "fleet",
+   "package": {
+    "name": "synthetics"
+   }
+  },
+  "phases": {
+   "delete": {
+    "actions": {
+     "delete": {
+      "delete_searchable_snapshot": true
+     }
+    },
+    "min_age": "365d"
+   },
+   "hot": {
+    "actions": {
+     "rollover": {
+      "max_age": "30d",
+      "max_primary_shard_size": "50gb"
+     },
+     "set_priority": {
+      "priority": 100
+     }
+    },
+    "min_age": "0ms"
+   }
+  }
+ },
+ "version": 1
+}

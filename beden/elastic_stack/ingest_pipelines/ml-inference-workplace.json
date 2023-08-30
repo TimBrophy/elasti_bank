@@ -1,0 +1,80 @@
+{
+ "description": "",
+ "processors": [
+  {
+   "remove": {
+    "field": "ml.inference.name_expanded",
+    "ignore_missing": true
+   }
+  },
+  {
+   "inference": {
+    "field_map": {
+     "name": "text_field"
+    },
+    "model_id": ".elser_model_1",
+    "on_failure": [
+     {
+      "append": {
+       "field": "_source._ingest.inference_errors",
+       "value": [
+        {
+         "message": "Processor 'inference' in pipeline 'workplace' failed with message '{{ _ingest.on_failure_message }}'",
+         "pipeline": "workplace",
+         "timestamp": "{{{ _ingest.timestamp }}}"
+        }
+       ]
+      }
+     }
+    ],
+    "target_field": "ml.inference.name_expanded"
+   }
+  },
+  {
+   "remove": {
+    "field": "ml.inference.content_expanded",
+    "ignore_missing": true
+   }
+  },
+  {
+   "inference": {
+    "field_map": {
+     "content": "text_field"
+    },
+    "model_id": ".elser_model_1",
+    "on_failure": [
+     {
+      "append": {
+       "field": "_source._ingest.inference_errors",
+       "value": [
+        {
+         "message": "Processor 'inference' in pipeline 'workplace' failed with message '{{ _ingest.on_failure_message }}'",
+         "pipeline": "workplace",
+         "timestamp": "{{{ _ingest.timestamp }}}"
+        }
+       ]
+      }
+     }
+    ],
+    "target_field": "ml.inference.content_expanded"
+   }
+  },
+  {
+   "append": {
+    "field": "_source._ingest.processors",
+    "value": [
+     {
+      "model_version": "8.8.0",
+      "pipeline": "workplace",
+      "processed_timestamp": "{{{ _ingest.timestamp }}}",
+      "types": [
+       "pytorch",
+       "text_expansion"
+      ]
+     }
+    ]
+   }
+  }
+ ],
+ "version": 1
+}

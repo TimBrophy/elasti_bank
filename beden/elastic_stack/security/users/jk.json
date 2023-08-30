@@ -1,0 +1,10 @@
+{
+ "email": "john.king@elastic.co",
+ "enabled": true,
+ "full_name": "John King",
+ "metadata": {},
+ "roles": [
+  "elasti_bank-demo"
+ ],
+ "username": "jk"
+}

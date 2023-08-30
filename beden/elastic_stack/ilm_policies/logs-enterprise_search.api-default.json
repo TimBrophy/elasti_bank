@@ -1,0 +1,44 @@
+{
+ "in_use_by": {
+  "composable_templates": [
+   "logs-enterprise_search.api-default"
+  ],
+  "data_streams": [
+   "logs-enterprise_search.api-default"
+  ],
+  "indices": [
+   ".ds-logs-enterprise_search.api-default-2023.07.03-000021",
+   ".ds-logs-enterprise_search.api-default-2023.06.26-000020"
+  ]
+ },
+ "modified_date": "2023-03-21T15:02:14.998Z",
+ "policy": {
+  "phases": {
+   "delete": {
+    "actions": {
+     "delete": {
+      "delete_searchable_snapshot": true
+     }
+    },
+    "min_age": "7d"
+   },
+   "hot": {
+    "actions": {
+     "forcemerge": {
+      "max_num_segments": 1
+     },
+     "readonly": {},
+     "rollover": {
+      "max_age": "7d",
+      "max_size": "10gb"
+     },
+     "set_priority": {
+      "priority": 50
+     }
+    },
+    "min_age": "0ms"
+   }
+  }
+ },
+ "version": 1
+}

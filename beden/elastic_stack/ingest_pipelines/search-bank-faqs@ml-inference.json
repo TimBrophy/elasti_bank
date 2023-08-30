@@ -1,0 +1,11 @@
+{
+ "description": "Enterprise Search Machine Learning Inference pipeline for the 'search-bank-faqs' index",
+ "processors": [
+  {
+   "pipeline": {
+    "name": "ml-inference-bank-faqs-v3"
+   }
+  }
+ ],
+ "version": 1
+}

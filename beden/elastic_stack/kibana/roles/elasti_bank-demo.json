@@ -1,0 +1,51 @@
+{
+ "_transform_error": [],
+ "_unrecognized_applications": [],
+ "elasticsearch": {
+  "cluster": [],
+  "indices": [
+   {
+    "allow_restricted_indices": false,
+    "field_security": {
+     "except": [],
+     "grant": [
+      "*"
+     ]
+    },
+    "names": [
+     "transactions*",
+     "metrics-*",
+     "interactions*",
+     "bank-accounts*",
+     "ctb-observability:traces-apm*,ctb-observability:logs-apm*,ctb-observability:metrics-apm*",
+     "ctb-observability:metricbeat-*",
+     "ctb-observability:filebeat-*",
+     "logs-*",
+     "account-applications*",
+     ".alerts-security.alerts-default,apm-*-transaction*,auditbeat-*,endgame-*,filebeat-*,logs-*,packetbeat-*,traces-apm*,winlogbeat-*,-*elastic-cloud-logs-*"
+    ],
+    "privileges": [
+     "read",
+     "all"
+    ]
+   }
+  ],
+  "run_as": []
+ },
+ "kibana": [
+  {
+   "base": [
+    "read"
+   ],
+   "feature": {},
+   "spaces": [
+    "default"
+   ]
+  }
+ ],
+ "metadata": {},
+ "name": "elasti_bank-demo",
+ "transient_metadata": {
+  "enabled": true
+ }
+}
