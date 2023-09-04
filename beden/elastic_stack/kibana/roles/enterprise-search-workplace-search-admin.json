@@ -1,0 +1,27 @@
+{
+ "_transform_error": [],
+ "_unrecognized_applications": [],
+ "elasticsearch": {
+  "cluster": [],
+  "indices": [],
+  "run_as": []
+ },
+ "kibana": [
+  {
+   "base": [],
+   "feature": {
+    "advancedSettings": [
+     "read"
+    ]
+   },
+   "spaces": [
+    "*"
+   ]
+  }
+ ],
+ "metadata": {},
+ "name": "enterprise-search-workplace-search-admin",
+ "transient_metadata": {
+  "enabled": true
+ }
+}

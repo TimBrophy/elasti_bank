@@ -1,0 +1,5 @@
+{
+ "description": "Enterprise Search Machine Learning Inference pipeline for the 'search-porsche-owners-manual' index",
+ "processors": [],
+ "version": 1
+}

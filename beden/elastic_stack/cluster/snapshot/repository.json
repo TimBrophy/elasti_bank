@@ -1,0 +1,6 @@
+{
+  "base_path": "elasti-bank/f00c4c2474e84ca8bafcb58e983f17e9",
+  "bucket": "eden-snapshots",
+  "max_restore_bytes_per_sec": "1000mb",
+  "max_snapshot_bytes_per_sec": "1000mb"
+ }

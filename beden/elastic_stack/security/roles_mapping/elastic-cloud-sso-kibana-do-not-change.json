@@ -1,0 +1,19 @@
+{
+ "enabled": true,
+ "metadata": {},
+ "role_templates": [
+  {
+   "format": "json",
+   "template": "{\"source\":\"{{#tojson}}groups{{/tojson}}\"}"
+  }
+ ],
+ "rules": {
+  "all": [
+   {
+    "field": {
+     "realm.name": "cloud-saml-kibana"
+    }
+   }
+  ]
+ }
+}

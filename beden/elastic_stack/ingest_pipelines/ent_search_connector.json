@@ -1,0 +1,30 @@
+{
+ "description": "Enterprise Search Connectors default ingest pipeline",
+ "processors": [
+  {
+   "gsub": {
+    "description": "Remove unicode 'replacement' characters",
+    "field": "body",
+    "ignore_missing": true,
+    "pattern": "�",
+    "replacement": ""
+   }
+  },
+  {
+   "gsub": {
+    "description": "Squish whitespace",
+    "field": "body",
+    "ignore_missing": true,
+    "pattern": "\\s+",
+    "replacement": " "
+   }
+  },
+  {
+   "trim": {
+    "field": "body",
+    "ignore_missing": true
+   }
+  }
+ ],
+ "version": 2
+}

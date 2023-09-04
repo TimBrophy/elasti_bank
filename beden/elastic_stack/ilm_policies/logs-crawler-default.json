@@ -1,0 +1,39 @@
+{
+ "in_use_by": {
+  "composable_templates": [
+   "logs-crawler-default"
+  ],
+  "data_streams": [],
+  "indices": []
+ },
+ "modified_date": "2023-03-21T15:02:15.431Z",
+ "policy": {
+  "phases": {
+   "delete": {
+    "actions": {
+     "delete": {
+      "delete_searchable_snapshot": true
+     }
+    },
+    "min_age": "14d"
+   },
+   "hot": {
+    "actions": {
+     "forcemerge": {
+      "max_num_segments": 1
+     },
+     "readonly": {},
+     "rollover": {
+      "max_age": "14d",
+      "max_size": "10gb"
+     },
+     "set_priority": {
+      "priority": 100
+     }
+    },
+    "min_age": "0ms"
+   }
+  }
+ },
+ "version": 1
+}

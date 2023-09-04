@@ -1,0 +1,37 @@
+{
+ "description": "Elastic Behavioural Analytics ingest pipeline",
+ "processors": [
+  {
+   "user_agent": {
+    "field": "event.user_agent",
+    "ignore_missing": true
+   }
+  },
+  {
+   "uri_parts": {
+    "field": "event.page_url",
+    "if": "ctx.event.page_url != null",
+    "keep_original": false,
+    "remove_if_successful": true,
+    "target_field": "url"
+   }
+  },
+  {
+   "remove": {
+    "field": [
+     "agent.ephemeral_id",
+     "agent.id",
+     "agent.name",
+     "agent.type",
+     "agent.version",
+     "host.name",
+     "input.type",
+     "log.file.path",
+     "log.offset"
+    ],
+    "ignore_missing": true
+   }
+  }
+ ],
+ "version": 1
+}

@@ -1,0 +1,167 @@
+{
+ "processors": [
+  {
+   "set": {
+    "copy_from": "title",
+    "field": "name"
+   }
+  },
+  {
+   "set": {
+    "copy_from": "body_content",
+    "field": "content"
+   }
+  },
+  {
+   "set": {
+    "copy_from": "title",
+    "field": "summary"
+   }
+  },
+  {
+   "set": {
+    "field": "category",
+    "value": "faq"
+   }
+  },
+  {
+   "set": {
+    "field": "rolePermissions",
+    "value": "[\\\"demo\\\", \\\"manager\\\"]"
+   }
+  },
+  {
+   "remove": {
+    "field": "ml.inference.content_expanded",
+    "ignore_missing": true
+   }
+  },
+  {
+   "inference": {
+    "field_map": {
+     "content": "text_field"
+    },
+    "model_id": ".elser_model_1",
+    "on_failure": [
+     {
+      "append": {
+       "field": "_source._ingest.inference_errors",
+       "value": [
+        {
+         "message": "Processor 'inference' in pipeline 'bank-faqs-v3' failed with message '{{ _ingest.on_failure_message }}'",
+         "pipeline": "bank-faqs-v3",
+         "timestamp": "{{{ _ingest.timestamp }}}"
+        }
+       ]
+      }
+     }
+    ],
+    "target_field": "ml.inference.content_expanded"
+   }
+  },
+  {
+   "remove": {
+    "field": "ml.inference.name_expanded",
+    "ignore_missing": true
+   }
+  },
+  {
+   "inference": {
+    "field_map": {
+     "name": "text_field"
+    },
+    "model_id": ".elser_model_1",
+    "on_failure": [
+     {
+      "append": {
+       "field": "_source._ingest.inference_errors",
+       "value": [
+        {
+         "message": "Processor 'inference' in pipeline 'bank-faqs-v3' failed with message '{{ _ingest.on_failure_message }}'",
+         "pipeline": "bank-faqs-v3",
+         "timestamp": "{{{ _ingest.timestamp }}}"
+        }
+       ]
+      }
+     }
+    ],
+    "target_field": "ml.inference.name_expanded"
+   }
+  },
+  {
+   "remove": {
+    "field": "ml.inference.category_expanded",
+    "ignore_missing": true
+   }
+  },
+  {
+   "inference": {
+    "field_map": {
+     "category": "text_field"
+    },
+    "model_id": ".elser_model_1",
+    "on_failure": [
+     {
+      "append": {
+       "field": "_source._ingest.inference_errors",
+       "value": [
+        {
+         "message": "Processor 'inference' in pipeline 'bank-faqs-v3' failed with message '{{ _ingest.on_failure_message }}'",
+         "pipeline": "bank-faqs-v3",
+         "timestamp": "{{{ _ingest.timestamp }}}"
+        }
+       ]
+      }
+     }
+    ],
+    "target_field": "ml.inference.category_expanded"
+   }
+  },
+  {
+   "remove": {
+    "field": "ml.inference.summary_expanded",
+    "ignore_missing": true
+   }
+  },
+  {
+   "inference": {
+    "field_map": {
+     "summary": "text_field"
+    },
+    "model_id": ".elser_model_1",
+    "on_failure": [
+     {
+      "append": {
+       "field": "_source._ingest.inference_errors",
+       "value": [
+        {
+         "message": "Processor 'inference' in pipeline 'bank-faqs-v3' failed with message '{{ _ingest.on_failure_message }}'",
+         "pipeline": "bank-faqs-v3",
+         "timestamp": "{{{ _ingest.timestamp }}}"
+        }
+       ]
+      }
+     }
+    ],
+    "target_field": "ml.inference.summary_expanded"
+   }
+  },
+  {
+   "append": {
+    "field": "_source._ingest.processors",
+    "value": [
+     {
+      "model_version": "8.8.0",
+      "pipeline": "bank-faqs-v3",
+      "processed_timestamp": "{{{ _ingest.timestamp }}}",
+      "types": [
+       "pytorch",
+       "text_expansion"
+      ]
+     }
+    ]
+   }
+  }
+ ],
+ "version": 1
+}

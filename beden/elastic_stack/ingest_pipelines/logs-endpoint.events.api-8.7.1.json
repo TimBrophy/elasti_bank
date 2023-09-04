@@ -1,0 +1,25 @@
+{
+ "_meta": {
+  "managed": true,
+  "managed_by": "fleet",
+  "package": {
+   "name": "endpoint"
+  }
+ },
+ "description": "Pipeline for setting event.ingested",
+ "processors": [
+  {
+   "set": {
+    "field": "event.ingested",
+    "ignore_failure": true,
+    "value": "{{ _ingest.timestamp }}"
+   }
+  },
+  {
+   "pipeline": {
+    "ignore_missing_pipeline": true,
+    "name": "logs-endpoint.events.api@custom"
+   }
+  }
+ ]
+}

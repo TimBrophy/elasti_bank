@@ -1,0 +1,11 @@
+{
+ "description": "Enterprise Search Machine Learning Inference pipeline for the 'search-transactions' index",
+ "processors": [
+  {
+   "pipeline": {
+    "name": "ml-inference-description-vector"
+   }
+  }
+ ],
+ "version": 1
+}

@@ -1,0 +1,40 @@
+{
+ "in_use_by": {
+  "composable_templates": [
+   ".alerts-observability.slo.alerts-default-index-template",
+   ".alerts-observability.uptime.alerts-default-index-template",
+   ".alerts-observability.logs.alerts-default-index-template",
+   ".alerts-security.alerts-default-index-template",
+   ".alerts-observability.apm.alerts-default-index-template",
+   ".alerts-observability.metrics.alerts-default-index-template"
+  ],
+  "data_streams": [],
+  "indices": [
+   ".internal.alerts-observability.metrics.alerts-default-000001",
+   ".internal.alerts-observability.logs.alerts-default-000001",
+   ".internal.alerts-observability.uptime.alerts-default-000001",
+   ".internal.alerts-security.alerts-default-000001",
+   ".internal.alerts-observability.slo.alerts-default-000001",
+   ".internal.alerts-observability.apm.alerts-default-000001",
+   ".internal.alerts-observability.slo.alerts-default-000002"
+  ]
+ },
+ "modified_date": "2023-06-09T14:16:12.840Z",
+ "policy": {
+  "_meta": {
+   "managed": true
+  },
+  "phases": {
+   "hot": {
+    "actions": {
+     "rollover": {
+      "max_age": "30d",
+      "max_primary_shard_size": "50gb"
+     }
+    },
+    "min_age": "0ms"
+   }
+  }
+ },
+ "version": 9
+}

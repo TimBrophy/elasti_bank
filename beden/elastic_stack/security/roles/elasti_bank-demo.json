@@ -1,0 +1,46 @@
+{
+ "applications": [
+  {
+   "application": "kibana-.kibana",
+   "privileges": [
+    "space_read"
+   ],
+   "resources": [
+    "space:default"
+   ]
+  }
+ ],
+ "cluster": [],
+ "indices": [
+  {
+   "allow_restricted_indices": false,
+   "field_security": {
+    "except": [],
+    "grant": [
+     "*"
+    ]
+   },
+   "names": [
+    "transactions*",
+    "metrics-*",
+    "interactions*",
+    "bank-accounts*",
+    "ctb-observability:traces-apm*,ctb-observability:logs-apm*,ctb-observability:metrics-apm*",
+    "ctb-observability:metricbeat-*",
+    "ctb-observability:filebeat-*",
+    "logs-*",
+    "account-applications*",
+    ".alerts-security.alerts-default,apm-*-transaction*,auditbeat-*,endgame-*,filebeat-*,logs-*,packetbeat-*,traces-apm*,winlogbeat-*,-*elastic-cloud-logs-*"
+   ],
+   "privileges": [
+    "read",
+    "all"
+   ]
+  }
+ ],
+ "metadata": {},
+ "run_as": [],
+ "transient_metadata": {
+  "enabled": true
+ }
+}
