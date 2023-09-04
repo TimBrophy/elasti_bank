@@ -69,7 +69,21 @@ def create_index(index_name):
         }
         index_settings = {
             'default_pipeline': 'transactions-elser-v1',
-            "number_of_replicas": 1
+            "number_of_replicas": 1,
+            "analysis": {
+                "analyzer": {
+                    "default": {
+                        "tokenizer": "whitespace",
+                        "filter": ["my_custom_stop_words_filter"]
+                    }
+                },
+                "filter": {
+                    "my_custom_stop_words_filter": {
+                        "type": "stop",
+                        "ignore_case": 'true'
+                    }
+                }
+            }
 
         }
     elif index_name == 'search_history':

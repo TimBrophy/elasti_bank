@@ -25,7 +25,16 @@ def home(request):
     offer_list = []
     offer_transactions = []
     offer_dict = {}
+
     if request.user.is_authenticated:
+        if request.method == 'POST':
+            interested = request.POST.get('interested', False)
+            if interested:
+                request.session['interested_in_special_offers'] = True
+            else:
+                request.session.pop('interested_in_special_offers', None)
+
+
         # run a search using Special Offers to see if the customer is eligible for any of them
         current_special_offers = SpecialOffer.objects.all()
 

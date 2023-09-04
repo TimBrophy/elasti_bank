@@ -93,6 +93,7 @@ class Command(BaseCommand):
             for t in range(0, total_months):
                 recipient_name = get_recipient_name(i.search_terms)
                 list_of_terms = i.search_terms.split(',')
+                print(list_of_terms)
                 if i.transactiontype.name == 'Debit order':
                     transaction_type = debit_order
                     transaction_description = "Outbound Debit Order - {}. Banking partner: {}".format(

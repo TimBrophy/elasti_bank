@@ -4,9 +4,53 @@
 {% block title %}elasti_bank{% endblock %}
 
 {% block content %}
+    {% if not user.is_authenticated %}
     <div>
         <h1 class="title">The bank that cares about you.</h1>
     </div>
+    {% endif %}
+    {% if user.is_authenticated %}
+        {% if offer_transactions %}
+            {% if not request.session.interested_in_special_offers %}
+            <div class="card">
+                <div class="card-body">
+                    <form method="post">
+                        {% csrf_token %}
+                        <h2 class="title">Are you interested in seeing special offers that have been tailor made for you?</h2>
+                        <p>Yes I am! Tell me more: <input type="checkbox" name="interested" {% if user.userprofile.interested_in_special_offers %}checked{% endif %}></p> <button class="btn btn-info" type="submit">Show me the deals!</button>
+                    </form>
+                </div>
+            </div>
+            <pre></pre>
+            {% endif %}
+            {% if request.session.interested_in_special_offers %}
+                <div>
+                    <div>
+                        <h1 class="title">Tailor made offers for you:</h1>
+                        <div class="card-deck">
+                          {% for offer in offers %}
+                            <div class="card mb-4 shadow-sm">
+                                <div class="card-body">
+                                    <h2 class="title"><a href="{% url 'bank-account-application' %}">{{ offer.name }}</a></h2>
+                                    <p class="card-text">{{ offer.description }}</p>
+                                    <p class="card-text">This offer is based on these entries in you transaction history:</p>
+                                    <ul>
+                                    {% for t in offer_transactions %}
+                                        {% if t.campaign_name == offer.name %}
+                                            <li class="small">{{ t.description }} - {{ t.score }}
+                                        {% endif %}
+                                    {% endfor %}
+                                    </ul>
+                                </div>
+                            </div>
+                        {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+        {% endif %}
+    {% endif %}
+    <pre></pre>
     {% if user.is_authenticated %}
         <div class="card">
             <div class="card-body">
@@ -67,34 +111,6 @@
                 </table>
             </div>
         </div>
-    {% endif %}
-    <pre></pre>
-    {% if user.is_authenticated %}
-        {% if offer_transactions %}
-        <div>
-            <div>
-                <h1 class="title">Tailor made offers for you:</h1>
-                <div class="card-deck">
-                  {% for offer in offers %}
-                    <div class="card mb-4 shadow-sm">
-                        <div class="card-body">
-                            <h2 class="title"><a href="{% url 'bank-account-application' %}">{{ offer.name }}</a></h2>
-                            <p class="card-text">{{ offer.description }}</p>
-                            <p class="card-text">This offer is based on these entries in you transaction history:</p>
-                            <ul>
-                            {% for t in offer_transactions %}
-                                {% if t.campaign_name == offer.name %}
-                                    <li class="small">{{ t.description }} - {{ t.score }}
-                                {% endif %}
-                            {% endfor %}
-                            </ul>
-                        </div>
-                    </div>
-                {% endfor %}
-                </div>
-            </div>
-        </div>
-        {% endif %}
     {% endif %}
     <pre></pre>
     <div>

@@ -2,7 +2,6 @@ from accounts.models import CustomUser, IncomeLevel
 from django.core.management.base import BaseCommand
 from mimesis import Person
 from mimesis.locales import Locale
-from mimesis.enums import Gender
 import random
 import string
 

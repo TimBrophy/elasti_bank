@@ -7,9 +7,26 @@ from django.contrib.auth.decorators import login_required
 from datetime import datetime, timezone
 from elasticsearch import Elasticsearch
 import uuid
+import json
+import os
+import time
 from django.conf import settings
 from django.core.paginator import Paginator
 
+
+def append_to_log_file(filename, new_row):
+    # Serialize the dictionary as a JSON string
+    new_row_json = json.dumps(new_row)
+    print(new_row_json)
+    # Get the log directory within the project's base directory
+    log_dir = os.path.join(settings.BASE_DIR, 'log_files')
+    os.makedirs(log_dir, exist_ok=True)
+
+    # Get the full path to the log file
+    filepath = os.path.join(log_dir, filename)
+    with open(filepath, "a") as file:
+        file.write(new_row_json)
+        file.write("\n")
 
 # Create your views.py here.
 @login_required
@@ -71,24 +88,28 @@ def money_transfer(request):
 
             record_id = uuid.uuid4()
             document = {
-                'id': record_id,
-                'timestamp': transfer_transaction.created_at,
-                'user.id': source_bank_account.user.id,
-                'user.name': source_bank_account.user.username,
-                'bank_account': source_bank_account.account_number,
-                'full_name': source_bank_account.user.first_name + ' ' + source_bank_account.user.last_name,
-                'destination_entity': transfer_transaction.destination_bank,
-                'destination_account': transfer_transaction.destination_account,
-                'recipient': transfer_transaction.recipient_name,
-                'value': transfer_transaction.value,
-                'description': transfer_transaction.description,
-                'text_field': transfer_transaction.description,
-                'reference': transfer_transaction.reference,
-                'type': 'Transfer',
-                'sub_type': transfer_transaction.transaction_type.name
+                "id": str(record_id),
+                "timestamp": transfer_transaction.created_at.isoformat(),
+                "user.id": source_bank_account.user.id,
+                "user.name": source_bank_account.user.username,
+                "bank_account": str(source_bank_account.account_number),
+                "full_name": source_bank_account.user.first_name + ' ' + source_bank_account.user.last_name,
+                "destination_entity": transfer_transaction.destination_bank,
+                "destination_account": transfer_transaction.destination_account,
+                "recipient": transfer_transaction.recipient_name,
+                "value": transfer_transaction.value,
+                "description": transfer_transaction.description,
+                "text_field": transfer_transaction.description,
+                "reference": transfer_transaction.reference,
+                "type": "Transfer",
+                "sub_type": transfer_transaction.transaction_type.name
             }
 
-            es.index(index="transactions", id=record_id, document=document)
+            # es.index(index="transactions", id=record_id, document=document)
+            # Append JSON data to file or create new file
+            filename = "transactions.log"
+            append_to_log_file(filename, document)
+
             # Redirect to success page
             return redirect('debit-success/{}'.format(request.POST.get('source_account')))
     else:
@@ -117,24 +138,28 @@ def debit_transaction(request):
 
             record_id = uuid.uuid4()
             document = {
-                'id': record_id,
-                'timestamp': debit_transaction.created_at,
-                'user.id': bank_account.user.id,
-                'user.name': bank_account.user.username,
-                'bank_account': bank_account.account_number,
-                'full_name': bank_account.user.first_name + ' ' + bank_account.user.last_name,
-                'destination_entity': debit_transaction.destination_bank,
-                'destination_account': debit_transaction.destination_account,
-                'recipient': debit_transaction.recipient_name,
-                'value': debit_transaction.value,
-                'description': debit_transaction.description,
-                'text_field': debit_transaction.description,
-                'reference': debit_transaction.reference,
-                'type': 'Debit',
-                'sub_type': debit_transaction.transaction_type.name
+                "id": str(record_id),
+                "timestamp": debit_transaction.created_at.isoformat(),
+                "user.id": bank_account.user.id,
+                "user.name": bank_account.user.username,
+                "bank_account": str(bank_account.account_number),
+                "full_name": bank_account.user.first_name + ' ' + bank_account.user.last_name,
+                "destination_entity": debit_transaction.destination_bank,
+                "destination_account": debit_transaction.destination_account,
+                "recipient": debit_transaction.recipient_name,
+                "value": debit_transaction.value,
+                "description": debit_transaction.description,
+                "text_field": debit_transaction.description,
+                "reference": debit_transaction.reference,
+                "type": "Debit",
+                "sub_type": debit_transaction.transaction_type.name
             }
 
-            es.index(index="transactions", id=record_id, document=document)
+            # es.index(index="transactions", id=record_id, document=document)
+            # Append JSON data to file or create new file
+            filename = "transactions.log"
+            append_to_log_file(filename, document)
+
             activity_log_message = "Viewed: Send money form"
             activity_type = ActivityType.objects.get(id=1)
             activity_entry = Activity(user=request.user, activity_log_message=activity_log_message,

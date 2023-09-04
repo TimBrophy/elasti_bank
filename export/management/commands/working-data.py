@@ -23,7 +23,7 @@ class Command(BaseCommand):
         self.stdout.write('Clearing data handled')
 
         # create users
-        call_command('generate-users', '1000')
+        call_command('generate-users', '999')
         self.stdout.write('New users generated...')
 
         # create bank accounts

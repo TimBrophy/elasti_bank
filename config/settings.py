@@ -170,21 +170,16 @@ GOOGLE_MAPS_API_KEY = os.environ.get('GOOGLE_MAPS_SECRET')
 OPENAI_KEY = os.environ.get('OPENAI_SECRET')
 CHAT_URL = os.environ.get('FLASK_APP_URL')
 VECTOR_MODEL = ".elser_model_1"
-
-
+APM_SECRET_TOKEN = os.environ.get('APM_SECRET_TOKEN')
+APM_SERVER_URL = os.environ.get('APM_SERVER_URL')
 
 ELASTIC_APM = {
-    # Set the required service name. Allowed characters:
-    # a-z, A-Z, 0-9, -, _, and space
-    'SERVICE_NAME': 'elasti_bank',
-    'DEBUG': True,
+  'SERVICE_NAME': 'elasti-bank',
 
-    # Use if APM Server requires a secret token
-    'SECRET_TOKEN': os.environ['APM_SECRET_TOKEN'],
+  'SECRET_TOKEN': APM_SECRET_TOKEN,
 
-    # Set the custom APM Server URL (default: http://localhost:8200)
-    'SERVER_URL': os.environ.get('APM_SERVER_URL'),
+  'SERVER_URL': APM_SERVER_URL,
 
-    # Set the service environment
-    'ENVIRONMENT': 'production',
+  'ENVIRONMENT': 'production',
 }
+
