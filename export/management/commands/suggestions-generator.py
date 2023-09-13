@@ -65,7 +65,7 @@ def append_to_log_file(filename, new_row):
 
 def get_recipient_name(special_offer_search_terms):
     if 'vehicle' in special_offer_search_terms:
-        recipient = "Vehicle Finance Bank"
+        recipient = "Automotive Finance Bank"
     else:
         recipient = "Generic bank"
     return recipient

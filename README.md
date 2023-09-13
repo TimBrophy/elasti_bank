@@ -49,7 +49,9 @@ GOOGLE_MAPS_SECRET="<YOUR_SECRET_KEY>"
 7) Because the chat part of the elasti_bank site is just a crowbar'd version of the esre python flask example, I've cheated a bit and simply spun that puppy up in a container locally and iframed it, so we need to head back to our elasti_bank/config/.env file and update the following variable:
    FLASK_APP_URL="http://<YOUR_VM_IP>:4000"
 
-Lastly, make sure that all the services you need to be running in order to make this work are indeed running correctly:
+8) Update Logstash to output to the new cluster based on the Cloud ID and Cloud Auth provided by the beden deploy step. cd into the Logstash directory and update all of the .conf files in that directory with the right output details.
+
+Make sure that all the services you need to be running in order to make this work are indeed running correctly:
 1) sudo systemctl status gunicorn
 2) sudo systemctl status nginx
 3) sudo systemctl status postgresql
